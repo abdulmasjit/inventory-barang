@@ -1,0 +1,43 @@
+.table-bordered td {
+  /* border: 1px solid #d8dbe0 !important; */
+  padding: 8px !important;
+}
+.tr-head {
+  /* background-color: #f8f8f9 !important; */
+  vertical-align: bottom;
+  border-bottom: 3px solid #dee2e6;
+}
+.flat{
+  border: none !important;
+}
+.card {
+  border-radius: 10px !important;
+}
+.card .card-header{
+  background: none !important;
+}
+.card .card-title {
+  color: #010101;
+  margin-bottom: 1.2rem;
+  text-transform: capitalize;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.card .card-subtitle {
+  font-weight: 400;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
+}
+.form-group label{
+  font-weight: 400;
+  font-size:15px !important;
+}
+.form-group input[type="text"] {
+  font-size:15px !important;
+}
+.form-group input[type="textarea"] {
+  font-size:15px !important;
+}
+.form-group input[type="select"] {
+  font-size:15px !important;
+}

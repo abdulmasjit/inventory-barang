@@ -1,0 +1,25 @@
+th.sortable {
+    position: relative;
+    cursor: pointer;
+}
+
+th.sortable::after {
+    font-family: 'FontAwesome';
+    /* content: "\f0dc"; */
+    position: absolute;
+    right: 8px;
+    color: #333;
+    font-size: 15px;
+}
+
+th.sortable.asc::after {
+    content: "\f0de";
+}
+
+th.sortable.desc::after {
+    content: "\f0dd";
+}
+
+th.sortable:hover::after {
+    color: black;
+}
