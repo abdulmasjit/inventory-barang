@@ -24,7 +24,7 @@ use App\Http\Controllers\SatuanController;
 Route::get('/', [AuthController::class, 'showFormLogin'])->name('login');
 Route::post('auth/login', [AuthController::class, 'login']);
 Route::get('auth/logout', [AuthController::class, 'logout'])->name('logout');
- 
+
 Route::group(['middleware' => 'auth'], function () {
     // dashboard
     Route::get('home', [HomeController::class, 'index'])->name('home');
