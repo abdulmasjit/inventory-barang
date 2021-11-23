@@ -41,5 +41,15 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/fetch-data', [JenisBarangController::class, 'fetch_data']);
     });
 
-    Route::resource('satuan', SatuanController::class);
-});
+    // Master Satuan
+    Route::group(['prefix' => '/master'], function() {
+      Route::get('satuan', [SatuanController::class, 'index'])->name('satuan');
+    });
+
+    Route::group(['prefix' => '/satuan'], function() {
+      Route::post('/save', [SatuanController::class, 'save'])->name('satuan.save');
+      Route::post('/update', [SatuanController::class, 'update'])->name('satuan.update');
+      Route::get('/load-modal', [SatuanController::class, 'load_modal']);
+      Route::get('/delete/{id}', [SatuanController::class, 'delete'])->name('satuan.delete');
+      Route::get('/fetch-data', [SatuanController::class, 'fetch_data']);
+    });});
