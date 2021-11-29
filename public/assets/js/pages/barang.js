@@ -57,36 +57,37 @@ function sort_table(id, column){
   fetch_data(1);
 }
 
-$('#btn-tambah').on('click', function() {
-    $.ajax({
-        url: base_url + "/jenis-barang/load-modal",
-        type: 'GET',
-        data : {},
-        dataType: 'html',
-        beforeSend: function() {},
-        success: function(result) {
-            $('#div_modal').html(result);
-            $('#modeform').val('ADD');
-            $('#formModal').modal('show');
-        }
-    });
-});
+// $('#btn-tambah').on('click', function() {
+//     $.ajax({
+//         url: base_url + "/jenis-barang/load-modal",
+//         type: 'GET',
+//         data : {},
+//         dataType: 'html',
+//         beforeSend: function() {},
+//         success: function(result) {
+//             $('#div_modal').html(result);
+//             $('#modeform').val('ADD');
+//             $('#formModal').modal('show');
+//         }
+//     });
+// });
 
 $(document).on('click', '.btn-ubah', function(event) {
   event.preventDefault();
   var id = $(this).attr('data-id');
-  $.ajax({
-    url: base_url + "/jenis-barang/load-modal",
-    type: 'get',
-    dataType: 'html',
-    data:{id:id},
-    beforeSend: function () {},
-    success: function (result) {    
-      $('#div_modal').html(result);
-      $('#modeform').val('UPDATE');
-      $('#formModal').modal('show');
-    }
-  });
+  location.href = base_url + `/master/barang-edit/${id}`
+  // $.ajax({
+  //   url: base_url + "/jenis-barang/load-modal",
+  //   type: 'get',
+  //   dataType: 'html',
+  //   data:{id:id},
+  //   beforeSend: function () {},
+  //   success: function (result) {    
+  //     $('#div_modal').html(result);
+  //     $('#modeform').val('UPDATE');
+  //     $('#formModal').modal('show');
+  //   }
+  // });
 });
 
 $(document).on('click', '.btn-hapus', function(e) {
