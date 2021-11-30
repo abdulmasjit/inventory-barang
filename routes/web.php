@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/add', [BarangController::class, 'add'])->name('barang.add');
     Route::post('/update', [BarangController::class, 'update'])->name('barang.update');
     // Route::get('/load-modal', [BarangController::class, 'load_modal']);
-    // Route::get('/delete/{id}', [BarangController::class, 'delete'])->name('jenis-barang.delete');
+    Route::get('/delete/{id}', [BarangController::class, 'delete'])->name('barang.delete');
     Route::get('/fetch-data', [BarangController::class, 'fetch_data']);
   });
 });

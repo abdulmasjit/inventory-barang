@@ -57,37 +57,10 @@ function sort_table(id, column){
   fetch_data(1);
 }
 
-// $('#btn-tambah').on('click', function() {
-//     $.ajax({
-//         url: base_url + "/jenis-barang/load-modal",
-//         type: 'GET',
-//         data : {},
-//         dataType: 'html',
-//         beforeSend: function() {},
-//         success: function(result) {
-//             $('#div_modal').html(result);
-//             $('#modeform').val('ADD');
-//             $('#formModal').modal('show');
-//         }
-//     });
-// });
-
 $(document).on('click', '.btn-ubah', function(event) {
   event.preventDefault();
   var id = $(this).attr('data-id');
   location.href = base_url + `/master/barang-edit/${id}`
-  // $.ajax({
-  //   url: base_url + "/jenis-barang/load-modal",
-  //   type: 'get',
-  //   dataType: 'html',
-  //   data:{id:id},
-  //   beforeSend: function () {},
-  //   success: function (result) {    
-  //     $('#div_modal').html(result);
-  //     $('#modeform').val('UPDATE');
-  //     $('#formModal').modal('show');
-  //   }
-  // });
 });
 
 $(document).on('click', '.btn-hapus', function(e) {
@@ -96,8 +69,8 @@ $(document).on('click', '.btn-hapus', function(e) {
   var page = $('#hidden_page').val();
 
   Swal.fire({
-    title: 'Hapus Jenis Barang',
-    text: "Apakah Anda yakin data ?",
+    title: 'Hapus Barang',
+    text: "Apakah Anda yakin menghapus ?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33',
@@ -110,7 +83,7 @@ $(document).on('click', '.btn-hapus', function(e) {
         $.ajax({
           method: 'GET',
           dataType: 'json',
-          url: base_url + "/jenis-barang/delete/" + id,
+          url: base_url + "/barang/delete/" + id,
           data: {},
           success: function (data) {
             if (data.success === true) {
@@ -137,39 +110,4 @@ $(document).on('click', '.btn-hapus', function(e) {
     allowOutsideClick: false
   });
   e.preventDefault();
-});
-
-$(document).on('submit', '#formData', function(event) {
-  event.preventDefault();
-  const modeform = $('#modeform').val();
-  if(modeform=='ADD'){
-    var url = "/jenis-barang/save";
-  }else{
-    var url = "/jenis-barang/update";
-  }
-
-  $.ajax({
-      url: base_url + url,
-      method: 'POST',
-      dataType: 'json',	
-      data: new FormData($('#formData')[0]),
-      async: true,
-      processData: false,
-      contentType: false,
-      success: function (data) {
-        if (data.success == true) {
-            Toast.fire({
-                icon: 'success',
-                title: data.message
-            });
-            $('#formModal').modal('hide');
-            fetch_data(1);
-        } else {
-            Swal.fire({icon: 'error',title: 'Oops...',text: data.message});
-        }
-      },
-      fail: function (event) {
-          alert(event);
-      }
-  });
 });

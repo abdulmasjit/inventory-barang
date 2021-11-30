@@ -57,25 +57,17 @@ class BarangController extends Controller
         $id = $request->id;
         $dataTypeItems = $this->fecth_list_jenis_barang();
         $dataUnits = $this->fecth_list_satuan();   
-        // $data['mode'] = "ADD";
-        // $data['dataTypeItems'] = $this->fecth_list_jenis_barang();
-        // $data['dataUnits'] = $this->fecth_list_satuan();
         return view('barang.form_barang', compact('dataTypeItems', 'dataUnits'));
     }
 
     public function edit(Request $request)
     {
-        // var_dump(`qqqqqqqqqqqq{$request}`);
         $id = $request->id;
         $dataTypeItems = $this->fecth_list_jenis_barang();
         $dataUnits = $this->fecth_list_satuan();
         if ($id != "") {
             $data = Barang::find($id);
-            // ->get();
         }
-        // $data['mode'] = "ADD";
-        // $data['dataTypeItems'] = $this->fecth_list_jenis_barang();
-        // $data['dataUnits'] = $this->fecth_list_satuan();
         return view('barang.form_barang', compact('data', 'dataTypeItems', 'dataUnits'));
     }
 
@@ -206,5 +198,13 @@ class BarangController extends Controller
             $response['message'] = "Data gagal disimpan";
             return response()->json($response);
         }
+    }
+
+    public function delete($id)
+    { 
+        Barang::where("id_barang", $id)->delete();
+        $response['success'] = true;
+        $response['message'] = "Data berhasil dihapus";
+        return response()->json($response);
     }
 }
