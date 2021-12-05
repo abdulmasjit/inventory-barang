@@ -78,14 +78,11 @@
     // fetch_data(1)
     $(document).on('change', '#id_jenis_barang', function() {
       var air_id = $('#id_jenis_barang').val();
-
-      console.log("Its Change !", air_id);
     })
   })
   $(document).on('submit', '#formData', function(event) {
     event.preventDefault();
     const modeform = $('#modeform').val();
-    console.log('ini  ku klik', $('#formData')[0])
     if ($('#id_barang').val() !== '') {
       var url = "/barang/update";
     } else {

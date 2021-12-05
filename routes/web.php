@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,18 +55,30 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/fetch-data', [SatuanController::class, 'fetch_data']);
   });
 
+  //Master Barang
   Route::group(['prefix' => '/master'], function () {
     Route::get('barang', [BarangController::class, 'index'])->name('barang');
     Route::get('barang-add', [BarangController::class, 'create'])->name('barang.create');
     Route::get('barang-edit/{id}', [BarangController::class, 'edit'])->name('barang.edit');
   });
-  
-  Route::group(['prefix' => '/barang'], function() {
-    // print
+
+  Route::group(['prefix' => '/barang'], function () {
     Route::post('/add', [BarangController::class, 'add'])->name('barang.add');
     Route::post('/update', [BarangController::class, 'update'])->name('barang.update');
-    // Route::get('/load-modal', [BarangController::class, 'load_modal']);
     Route::get('/delete/{id}', [BarangController::class, 'delete'])->name('barang.delete');
     Route::get('/fetch-data', [BarangController::class, 'fetch_data']);
+  });
+
+  // Master Supplier
+  Route::group(['prefix' => '/master'], function () {
+    Route::get('supplier', [SupplierController::class, 'index'])->name('supplier');
+  });
+
+  Route::group(['prefix' => '/supplier'], function () {
+    Route::post('/save', [SupplierController::class, 'save'])->name('supplier.save');
+    Route::post('/update', [SupplierController::class, 'update'])->name('supplier.update');
+    Route::get('/load-modal', [SupplierController::class, 'load_modal']);
+    Route::get('/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
+    Route::get('/fetch-data', [SupplierController::class, 'fetch_data']);
   });
 });
