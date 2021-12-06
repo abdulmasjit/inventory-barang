@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\SatuanController;
+use App\Http\Controllers\BarangMasukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,4 +53,20 @@ Route::group(['middleware' => 'auth'], function () {
       Route::get('/load-modal', [SatuanController::class, 'load_modal']);
       Route::get('/delete/{id}', [SatuanController::class, 'delete'])->name('satuan.delete');
       Route::get('/fetch-data', [SatuanController::class, 'fetch_data']);
-    });});
+    });
+
+    // Barang Masuk
+    Route::group(['prefix' => '/barang-masuk'], function() {
+      Route::get('/', [BarangMasukController::class, 'index'])->name('barangMasuk');
+      Route::get('/create', [BarangMasukController::class, 'create'])->name('barangMasuk.create');
+      Route::get('/edit/{id}', [BarangMasukController::class, 'edit'])->name('barangMasuk.edit');
+      Route::get('/fetch-data', [BarangMasukController::class, 'fetch_data']);
+      Route::delete('/delete/{id}', [BarangMasukController::class, 'delete'])->name('BarangMasuk.delete');
+      Route::post('/save', [BarangMasukController::class, 'save'])->name('BarangMasuk.save');
+      Route::post('/update', [BarangMasukController::class, 'update'])->name('BarangMasuk.update');
+    });
+
+    // Lookup Barang
+    Route::get('/lookup-barang', [BarangMasukController::class, 'lookup_barang']);
+    Route::get('/lookup-barang/fetch-data', [BarangMasukController::class, 'fetch_lookup_barang']);
+});
