@@ -21,8 +21,7 @@ class BarangMasukController extends Controller
 
     public function index(Request $request)
     {   
-        $data = [];
-        return view('barang_masuk.index', compact('data'));
+        return view('barang_masuk.index');
     }
 
     public function create(Request $request)
@@ -31,13 +30,25 @@ class BarangMasukController extends Controller
         $kode = $this->m_main->getNomorTransaksi('TR', 'nomor_transaksi', 'barang_masuk');
         $data['supplier'] = $supplier;
         $data['nomor_transaksi'] = $kode;
-        return view('barang_masuk.create', $data);
+        $data['modeform'] = 'ADD';
+        return view('barang_masuk.form_barang_masuk', $data);
     }
 
     public function edit($id)
     {   
-        $data = [];
-        return view('barang_masuk.create', compact('data'));
+        $supplier = DB::table('supplier')->select('id', 'kode', 'nama')->orderBy('nama', 'asc')->get();
+        $kode = $this->m_main->getNomorTransaksi('TR', 'nomor_transaksi', 'barang_masuk');
+        $dataDetail = DB::table('barang_masuk_detail as bmd')
+                          ->select('bmd.*', 'b.kode as kode_barang', 'b.nama as nama_barang')
+                          ->leftJoin('barang as b', 'bmd.id_barang', '=', 'b.id_barang')
+                          ->where('bmd.id_barang_masuk', $id)->get();
+
+        $data['supplier'] = $supplier;
+        $data['nomor_transaksi'] = $kode;
+        $data['modeform'] = 'UPDATE';
+        $data['data'] = BarangMasuk::find($id);	
+        $data['data_detail'] = $dataDetail;
+        return view('barang_masuk.form_barang_masuk', $data);
     }
 
     public function fetch_data(Request $request)
@@ -60,38 +71,48 @@ class BarangMasukController extends Controller
           $barang = $request->barang;
           $qty = $request->qty;
           $ket = $request->keterangan_barang;
+          // Format Tanggal
+          $tanggal = $request->tanggal;
+          $time = strtotime($tanggal);
+          $tanggal = date('Y-m-d', $time);
 
           date_default_timezone_set('Asia/Jakarta');
-          $id_barang_masuk = Uuid::uuid4()->toString();
-          $BarangMasuk = new BarangMasuk();
-          $BarangMasuk->id              = $id_barang_masuk;
-          $BarangMasuk->nomor_transaksi = $request->nomor_transaksi; 
-          $BarangMasuk->tanggal         = date('Y-m-d');
-          $BarangMasuk->id_supplier     = $request->supplier;
-          $BarangMasuk->id_user         = Auth::user()->id;
-          $BarangMasuk->keterangan      = $request->keterangan;
-          $BarangMasuk->status          = '1';
-          $BarangMasuk->save();
-          
-          // Save Detail
-          $BarangMasukDetail = new BarangMasukDetail();
-          $jml = count($barang);
-          for ($i=0; $i < $jml; $i++) { 
-            $dataDetail = array(
-                'id'              => Uuid::uuid4()->toString(),
-                'id_barang_masuk' => $id_barang_masuk, 
-                'id_barang'       => $barang[$i],
-                'jumlah'          => $qty[$i],
-                'keterangan'      => $ket[$i],
-                'created_at'      => date('Y-m-d H:i:s'),
-                'updated_at'      => date('Y-m-d H:i:s'),
-            );
-            $BarangMasukDetail->insert($dataDetail);
+          if(isset($barang)){
+              $id_barang_masuk = Uuid::uuid4()->toString();
+              $BarangMasuk = new BarangMasuk();
+              $BarangMasuk->id              = $id_barang_masuk;
+              $BarangMasuk->nomor_transaksi = $request->nomor_transaksi; 
+              $BarangMasuk->tanggal         = $tanggal;
+              $BarangMasuk->id_supplier     = $request->supplier;
+              $BarangMasuk->id_user         = Auth::user()->id;
+              $BarangMasuk->keterangan      = $request->keterangan;
+              $BarangMasuk->status          = '1';
+              $BarangMasuk->save();
+              
+              // Save Detail
+              $BarangMasukDetail = new BarangMasukDetail();    
+              $jml = count($barang);
+              for ($i=0; $i < $jml; $i++) { 
+                $dataDetail = array(
+                    'id'              => Uuid::uuid4()->toString(),
+                    'id_barang_masuk' => $id_barang_masuk, 
+                    'id_barang'       => $barang[$i],
+                    'jumlah'          => $qty[$i],
+                    'keterangan'      => $ket[$i],
+                    'created_at'      => date('Y-m-d H:i:s'),
+                    'updated_at'      => date('Y-m-d H:i:s'),
+                );
+                $BarangMasukDetail->insert($dataDetail);
+              }
+              
+              $response['success'] = true;
+              $response['message'] = "Data berhasil disimpan";
+              return response()->json($response);
+          }else{
+              $response['success'] = false;
+              $response['message'] = "Rincian transaksi tidak boleh kosong !";
+              return response()->json($response);
           }
-          
-          $response['success'] = true;
-          $response['message'] = "Data berhasil disimpan";
-          return response()->json($response);
       } catch (Exception $e) {
           $response['success'] = false;
           $response['message'] = "Data gagal disimpan";
@@ -102,9 +123,47 @@ class BarangMasukController extends Controller
     public function update(Request $request)
     {
       try {
-          $response['success'] = true;
-          $response['message'] = "Data berhasil diubah";
-          return response()->json($response);
+        // Request Array Detail Barang Masuk
+        $id = $request->id;
+        $barang = $request->barang;
+        $qty = $request->qty;
+        $ket = $request->keterangan_barang;
+        // Format Tanggal
+        $tanggal = $request->tanggal;
+        $time = strtotime($tanggal);
+        $tanggal = date('Y-m-d', $time);
+
+        date_default_timezone_set('Asia/Jakarta');
+        if(isset($barang)){
+            BarangMasuk::where('id', $id)->update([
+                'tanggal' => $tanggal,
+                'id_supplier' => $request->supplier,
+                'id_user' => Auth::user()->id,
+                'keterangan' => $request->keterangan,
+            ]);
+
+            // Delete Data
+            BarangMasukDetail::where("id_barang_masuk", $id)->delete();
+            // Save Detail
+            $BarangMasukDetail = new BarangMasukDetail();    
+            $jml = count($barang);
+            for ($i=0; $i < $jml; $i++) { 
+              $dataDetail = array(
+                  'id'              => Uuid::uuid4()->toString(),
+                  'id_barang_masuk' => $id, 
+                  'id_barang'       => $barang[$i],
+                  'jumlah'          => $qty[$i],
+                  'keterangan'      => $ket[$i],
+                  'created_at'      => date('Y-m-d H:i:s'),
+                  'updated_at'      => date('Y-m-d H:i:s'),
+              );
+              $BarangMasukDetail->insert($dataDetail);
+            }
+            
+            $response['success'] = true;
+            $response['message'] = "Data berhasil diubah";
+            return response()->json($response);
+        }
       } catch (Exception $e) {
           $response['success'] = false;
           $response['message'] = "Data gagal disimpan";
@@ -118,31 +177,5 @@ class BarangMasukController extends Controller
         $response['success'] = true;
         $response['message'] = "Data berhasil dihapus";
         return response()->json($response);
-    }
-
-    // Sementara nanti dipindah
-    public function lookup_barang(Request $request)
-    {
-        $barang = DB::table('barang')->orderBy('nama', 'asc')->get();
-        $data['barang'] = $barang;
-        return view('lookup.lookup_barang', $data);
-    }
-
-    public function fetch_lookup_barang(Request $request)
-    {
-        $limit = $request->get('limit');
-        $sortBy = $request->get('sortby');
-        $sortType = $request->get('sorttype');
-        $q = $request->get('q');
-        $q = str_replace(" ", "%", $q);
-
-        $data = DB::table('barang')
-                    ->select('id_barang', 'nama', 'kode')
-                    ->where('nama', 'like', '%'.$q.'%')
-                    ->orderBy($sortBy, $sortType)
-                    ->paginate($limit);            
-
-        $data->appends($request->all());
-        return view('lookup.list_data_barang', compact('data'));
     }
 }

@@ -1,13 +1,13 @@
 <style>
   .modal-fullscreen{
-    min-width: 80% !important;
+    min-width: 85% !important;
   }
 </style>
 <div class="modal fade" id="lookup_barang" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-fullscreen" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h6 class="modal-title" id="formModalLabel">Lookup Barang</h6>
+        <h5 class="modal-title" id="formModalLabel">Lookup Barang</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -16,9 +16,9 @@
         <div class="row" style="padding-top:12px;">
           <div class="col-md-2">
             <select class="form-control" name="limit" id="limit" onchange="fetch_data(1)">
-              <option value="1" selected>10 Baris</option>
+              <option value="10" selected>10 Baris</option>
+              <option value="15">15 Baris</option>
               <option value="25">25 Baris</option>
-              <option value="100">50 Baris</option>
             </select>
           </div>
           <div class="col-md-6"></div>

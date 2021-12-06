@@ -24,7 +24,7 @@
             <td>{{ $row->nama_supplier }}</td>
             <td>{{ $row->keterangan }}</td>
             <td class="text-center">
-              <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nomor_transaksi?>" class="btn btn-sm btn-warning btn-ubah" data-toggle="tooltip" title="Edit Transaksi"><i style="color:#fff;" class="fa fa-edit"></i></a>
+              <a href="{{ url('/barang-masuk/edit/'.$row->id) }}" class="btn btn-sm btn-warning btn-ubah" data-toggle="tooltip" title="Edit Transaksi"><i style="color:#fff;" class="fa fa-edit"></i></a>
               <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nomor_transaksi?>" class="btn btn-sm btn-danger btn-hapus" data-toggle="tooltip" title="Hapus Transaksi"><i class="fa fa-trash"></i></a>	    
             </td>
           </tr>

@@ -18,7 +18,7 @@ class BarangMasuk extends Model
       $q = DB::select("
           SELECT bm.id, bm.nomor_transaksi, bm.tanggal, bm.id_supplier, bm.id_user, bm.keterangan, bm.status, s.nama AS nama_supplier FROM barang_masuk bm
           LEFT JOIN supplier s ON bm.id_supplier = s.id
-          WHERE CONCAT(bm.nomor_transaksi, bm.tanggal, bm.keterangan, S.nama) LIKE '%$keyword%'
+          WHERE CONCAT(bm.nomor_transaksi, bm.tanggal, s.nama) LIKE '%$keyword%'
           ORDER BY $sortby $sorttype
       ");
       return $q;
