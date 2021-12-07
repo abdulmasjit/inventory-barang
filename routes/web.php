@@ -5,9 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\SatuanController;
-use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BarangKeluarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,9 +77,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/add', [BarangMasukController::class, 'create'])->name('barangMasuk.create');
     Route::get('/edit/{id}', [BarangMasukController::class, 'edit'])->name('barangMasuk.edit');
     Route::get('/fetch-data', [BarangMasukController::class, 'fetch_data']);
-    Route::delete('/delete/{id}', [BarangMasukController::class, 'delete'])->name('BarangMasuk.delete');
+    Route::get('/delete/{id}', [BarangMasukController::class, 'delete'])->name('BarangMasuk.delete');
     Route::post('/save', [BarangMasukController::class, 'save'])->name('BarangMasuk.save');
     Route::post('/update', [BarangMasukController::class, 'update'])->name('BarangMasuk.update');
+  });
+  // Barang Keluar
+  Route::group(['prefix' => '/barang-keluar'], function() {
+    Route::get('/', [BarangKeluarController::class, 'index'])->name('barangKeluar');
+    Route::get('/add', [BarangKeluarController::class, 'create'])->name('barangKeluar.create');
+    Route::get('/edit/{id}', [BarangKeluarController::class, 'edit'])->name('barangKeluar.edit');
+    Route::get('/fetch-data', [BarangKeluarController::class, 'fetch_data']);
+    Route::get('/delete/{id}', [BarangKeluarController::class, 'delete'])->name('BarangKeluar.delete');
+    Route::post('/save', [BarangKeluarController::class, 'save'])->name('BarangKeluar.save');
+    Route::post('/update', [BarangKeluarController::class, 'update'])->name('BarangKeluar.update');
   });
   // Lookup Barang
   Route::get('/lookup-barang', [BarangController::class, 'lookup_barang']);

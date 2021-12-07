@@ -4,7 +4,7 @@
   <div class="col-12">
     <div class="card flat">
       <div class="card-header card-header-blue">
-          <span class="card-title">Transaksi Barang Masuk</span>
+          <span class="card-title">Transaksi Barang Keluar</span>
       </div>
       <div class="card-body">
         <form id="formData">
@@ -29,23 +29,6 @@
                       }else {
                         echo date('d-m-Y'); 
                       }?>" required>
-            </div>
-          </div>
-          <div class="row mb-1">
-            <label for="supplier" class="col-sm-2 col-form-label">Supplier</label>
-            <div class="col-sm-5">
-              <select class="form-control form-control-sm" name="supplier" id="supplier" required>
-                <option value="">Pilih Supplier</option>
-                @foreach ($supplier as $s)
-                  <option 
-                    @if (isset($data))
-                      @if ($data['id_supplier'] == $s->id)
-                        {{ 'selected ' }}
-                      @endif
-                    @endif
-                  value="{{ $s->id }}">[{{ $s->kode }}] {{ $s->nama }}</option>  
-                @endforeach
-              </select>
             </div>
           </div>
           <div class="row mb-1">
@@ -84,7 +67,7 @@
           </div>
           <hr>
           <div class="text-right">
-            <a href="{{ url('/barang-masuk') }}" class="btn btn-secondary">Batal</a>           
+            <a href="{{ url('/barang-keluar') }}" class="btn btn-secondary">Batal</a>           
             <button id="btn-save" type="submit" class="btn btn-primary"><i id="loading" class=""></i> Simpan</button>           
           </div>
         </form>
@@ -168,7 +151,7 @@
   $(document).on('submit', '#formData', function(event) {
     event.preventDefault();
     const modeform = $('#modeform').val();
-    let url = (modeform=='ADD') ? '/barang-masuk/save' : '/barang-masuk/update';
+    let url = (modeform=='ADD') ? '/barang-keluar/save' : '/barang-keluar/update';
 
     $("#loading").addClass("fa fa-spinner fa-spin");
     $('#btn-save').prop('disabled', true)
@@ -190,7 +173,7 @@
                   
                   $("#loading").removeClass("fa fa-spinner fa-spin");
                   $('#btn-save').prop('disabled', false)
-                  window.location.href = "{{ url('/barang-masuk') }}";
+                  window.location.href = "{{ url('/barang-keluar') }}";
               }, 1000);
           } else {
               $("#loading").removeClass("fa fa-spinner fa-spin");

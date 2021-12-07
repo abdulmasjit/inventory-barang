@@ -22,7 +22,7 @@ function fetch_data(page) {
   var column_name = $('#hidden_column_name').val();
   var sort_type = $('#hidden_sort_type').val();
   $.ajax({
-    url: base_url + "/barang-masuk/fetch-data",
+    url: base_url + "/barang-keluar/fetch-data",
     type: 'GET',
     dataType: 'html',
     data: {
@@ -77,7 +77,7 @@ $(document).on('click', '.btn-hapus', function(e) {
         $.ajax({
           method: 'GET',
           dataType: 'json',
-          url: base_url + "/barang-masuk/delete/" + id,
+          url: base_url + "/barang-keluar/delete/" + id,
           data: {},
           success: function (data) {
             if (data.success === true) {

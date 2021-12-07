@@ -5,8 +5,7 @@
         <th width="5%" class="text-center sortable" id="column_created" data-sort="desc" onclick="sort_table('#column_created','bm.created_at')">No </th>
         <th width="15%" class="sortable" id="column_nomor_transaksi" data-sort="" onclick="sort_table('#column_nomor_transaksi','nomor_transaksi')">Nomor </th>
         <th width="10%" class="sortable" id="column_tanggal" data-sort="" onclick="sort_table('#column_tanggal','tanggal')">Tanggal </th>
-        <th width="20%" class="sortable" id="column_supplier" data-sort="" onclick="sort_table('#column_supplier','nama_supplier')">Supplier </th>
-        <th width="15%">Keterangan</th>
+        <th width="25%">Keterangan</th>
         <th class="text-center" width="10%">Aksi</th>
       </tr>
       </thead>
@@ -21,17 +20,16 @@
               <?php $time = strtotime($row->tanggal); ?>
               {{ date('d-m-Y', $time) }}
             </td>
-            <td>{{ $row->nama_supplier }}</td>
             <td>{{ $row->keterangan }}</td>
             <td class="text-center">
-              <a href="{{ url('/barang-masuk/edit/'.$row->id) }}" class="btn btn-sm btn-warning btn-ubah" data-toggle="tooltip" title="Edit Transaksi"><i style="color:#fff;" class="fa fa-edit"></i></a>
+              <a href="{{ url('/barang-keluar/edit/'.$row->id) }}" class="btn btn-sm btn-warning btn-ubah" data-toggle="tooltip" title="Edit Transaksi"><i style="color:#fff;" class="fa fa-edit"></i></a>
               <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nomor_transaksi?>" class="btn btn-sm btn-danger btn-hapus" data-toggle="tooltip" title="Hapus Transaksi"><i class="fa fa-trash"></i></a>	    
             </td>
           </tr>
           @endforeach
         @else 
         <tr>
-          <td colspan="6">Data tidak ditemukan!</td>
+          <td colspan="5">Data tidak ditemukan!</td>
         </tr>
         @endif
     </tbody>

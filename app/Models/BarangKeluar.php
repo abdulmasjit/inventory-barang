@@ -7,19 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class BarangMasuk extends Model
+class BarangKeluar extends Model
 {
     use HasFactory;
-    protected $table = "barang_masuk";
+    protected $table = "barang_keluar";
     protected $primaryKey = 'id';
     public $incrementing = false;
 
-    function getListBarangMasuk($keyword="", $sortby="", $sorttype=""){
+    function getListBarangKeluar($keyword="", $sortby="", $sorttype=""){
       $q = DB::select("
-          SELECT bm.id, bm.nomor_transaksi, bm.tanggal, bm.id_supplier, bm.id_user, bm.keterangan, bm.status, s.nama AS nama_supplier FROM barang_masuk bm
-          LEFT JOIN supplier s ON bm.id_supplier = s.id
-          WHERE CONCAT(bm.nomor_transaksi, bm.tanggal, s.nama) LIKE '%$keyword%'
-          AND bm.status = '1'
+          SELECT bk.id, bk.nomor_transaksi, bk.tanggal, bk.id_user, bk.keterangan, bk.status FROM barang_keluar bk
+          WHERE CONCAT(bk.nomor_transaksi, bk.tanggal) LIKE '%$keyword%'
+          AND bk.status = '1'
           ORDER BY $sortby $sorttype
       ");
       return $q;

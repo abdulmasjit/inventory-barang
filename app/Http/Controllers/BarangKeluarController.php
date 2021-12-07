@@ -2,53 +2,49 @@
 namespace App\Http\Controllers;
 
 use Validator;
-use App\Models\BarangMasuk;
-use App\Models\BarangMasukDetail;
+use App\Models\BarangKeluar;
+use App\Models\BarangKeluarDetail;
 use App\Models\MainModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 date_default_timezone_set('Asia/Jakarta');
-
-class BarangMasukController extends Controller
+        
+class BarangKeluarController extends Controller
 {
     public function __construct()
     {
       $this->m_main = new MainModel();
-      $this->m_barang_masuk = new BarangMasuk();
+      $this->m_barang_keluar = new BarangKeluar();
     }
 
     public function index(Request $request)
     {   
-        return view('barang_masuk.index');
+        return view('barang_keluar.index');
     }
 
     public function create(Request $request)
     {    
-        $supplier = DB::table('supplier')->select('id', 'kode', 'nama')->orderBy('nama', 'asc')->get();
-        $kode = $this->m_main->getNomorTransaksi('TRM', 'nomor_transaksi', 'barang_masuk');
-        $data['supplier'] = $supplier;
+        $kode = $this->m_main->getNomorTransaksi('TRK', 'nomor_transaksi', 'barang_keluar');
         $data['nomor_transaksi'] = $kode;
         $data['modeform'] = 'ADD';
-        return view('barang_masuk.form_barang_masuk', $data);
+        return view('barang_keluar.form_barang_keluar', $data);
     }
 
     public function edit($id)
     {   
-        $supplier = DB::table('supplier')->select('id', 'kode', 'nama')->orderBy('nama', 'asc')->get();
-        $kode = $this->m_main->getNomorTransaksi('TRM', 'nomor_transaksi', 'barang_masuk');
-        $dataDetail = DB::table('barang_masuk_detail as bmd')
-                          ->select('bmd.*', 'b.kode as kode_barang', 'b.nama as nama_barang')
-                          ->leftJoin('barang as b', 'bmd.id_barang', '=', 'b.id_barang')
-                          ->where('bmd.id_barang_masuk', $id)->get();
+        $kode = $this->m_main->getNomorTransaksi('TRK', 'nomor_transaksi', 'barang_keluar');
+        $dataDetail = DB::table('barang_keluar_detail as bkd')
+                          ->select('bkd.*', 'b.kode as kode_barang', 'b.nama as nama_barang')
+                          ->leftJoin('barang as b', 'bkd.id_barang', '=', 'b.id_barang')
+                          ->where('bkd.id_barang_keluar', $id)->get();
 
-        $data['supplier'] = $supplier;
         $data['nomor_transaksi'] = $kode;
         $data['modeform'] = 'UPDATE';
-        $data['data'] = BarangMasuk::find($id);	
+        $data['data'] = BarangKeluar::find($id);	
         $data['data_detail'] = $dataDetail;
-        return view('barang_masuk.form_barang_masuk', $data);
+        return view('barang_keluar.form_barang_keluar', $data);
     }
 
     public function fetch_data(Request $request)
@@ -59,9 +55,9 @@ class BarangMasukController extends Controller
         $q = $request->get('q');
         $q = str_replace(" ", "%", $q);
 
-        $getList = $this->m_barang_masuk->getListBarangMasuk($q, $sortBy, $sortType);
-        $data = $this->m_barang_masuk->arrayPaginator($getList, $request);            
-        return view('barang_masuk.list_data', compact('data'));
+        $getList = $this->m_barang_keluar->getListBarangKeluar($q, $sortBy, $sortType);
+        $data = $this->m_barang_keluar->arrayPaginator($getList, $request);            
+        return view('barang_keluar.list_data', compact('data'));
     }
 
     public function save(Request $request)
@@ -77,31 +73,30 @@ class BarangMasukController extends Controller
           $tanggal = date('Y-m-d', $time);
 
           if(isset($barang)){
-              $id_barang_masuk = Uuid::uuid4()->toString();
-              $BarangMasuk = new BarangMasuk();
-              $BarangMasuk->id              = $id_barang_masuk;
-              $BarangMasuk->nomor_transaksi = $request->nomor_transaksi; 
-              $BarangMasuk->tanggal         = $tanggal;
-              $BarangMasuk->id_supplier     = $request->supplier;
-              $BarangMasuk->id_user         = Auth::user()->id;
-              $BarangMasuk->keterangan      = $request->keterangan;
-              $BarangMasuk->status          = '1';
-              $BarangMasuk->save();
+              $id_barang_keluar = Uuid::uuid4()->toString();
+              $BarangKeluar = new BarangKeluar();
+              $BarangKeluar->id              = $id_barang_keluar;
+              $BarangKeluar->nomor_transaksi = $request->nomor_transaksi; 
+              $BarangKeluar->tanggal         = $tanggal;
+              $BarangKeluar->id_user         = Auth::user()->id;
+              $BarangKeluar->keterangan      = $request->keterangan;
+              $BarangKeluar->status          = '1';
+              $BarangKeluar->save();
               
               // Save Detail
-              $BarangMasukDetail = new BarangMasukDetail();    
+              $BarangKeluarDetail = new BarangKeluarDetail();    
               $jml = count($barang);
               for ($i=0; $i < $jml; $i++) { 
                 $dataDetail = array(
-                    'id'              => Uuid::uuid4()->toString(),
-                    'id_barang_masuk' => $id_barang_masuk, 
-                    'id_barang'       => $barang[$i],
-                    'jumlah'          => $qty[$i],
-                    'keterangan'      => $ket[$i],
-                    'created_at'      => date('Y-m-d H:i:s'),
-                    'updated_at'      => date('Y-m-d H:i:s'),
+                    'id'               => Uuid::uuid4()->toString(),
+                    'id_barang_keluar' => $id_barang_keluar, 
+                    'id_barang'        => $barang[$i],
+                    'jumlah'           => $qty[$i],
+                    'keterangan'       => $ket[$i],
+                    'created_at'       => date('Y-m-d H:i:s'),
+                    'updated_at'       => date('Y-m-d H:i:s'),
                 );
-                $BarangMasukDetail->insert($dataDetail);
+                $BarangKeluarDetail->insert($dataDetail);
               }
               
               $response['success'] = true;
@@ -133,29 +128,28 @@ class BarangMasukController extends Controller
         $tanggal = date('Y-m-d', $time);
 
         if(isset($barang)){
-            BarangMasuk::where('id', $id)->update([
+            BarangKeluar::where('id', $id)->update([
                 'tanggal' => $tanggal,
-                'id_supplier' => $request->supplier,
                 'id_user' => Auth::user()->id,
                 'keterangan' => $request->keterangan,
             ]);
 
             // Delete Data
-            BarangMasukDetail::where("id_barang_masuk", $id)->delete();
+            BarangKeluarDetail::where("id_barang_keluar", $id)->delete();
             // Save Detail
-            $BarangMasukDetail = new BarangMasukDetail();    
+            $BarangKeluarDetail = new BarangKeluarDetail();    
             $jml = count($barang);
             for ($i=0; $i < $jml; $i++) { 
               $dataDetail = array(
-                  'id'              => Uuid::uuid4()->toString(),
-                  'id_barang_masuk' => $id, 
-                  'id_barang'       => $barang[$i],
-                  'jumlah'          => $qty[$i],
-                  'keterangan'      => $ket[$i],
-                  'created_at'      => date('Y-m-d H:i:s'),
-                  'updated_at'      => date('Y-m-d H:i:s'),
+                  'id'               => Uuid::uuid4()->toString(),
+                  'id_barang_keluar' => $id, 
+                  'id_barang'        => $barang[$i],
+                  'jumlah'           => $qty[$i],
+                  'keterangan'       => $ket[$i],
+                  'created_at'       => date('Y-m-d H:i:s'),
+                  'updated_at'       => date('Y-m-d H:i:s'),
               );
-              $BarangMasukDetail->insert($dataDetail);
+              $BarangKeluarDetail->insert($dataDetail);
             }
             
             $response['success'] = true;
@@ -171,7 +165,7 @@ class BarangMasukController extends Controller
 
     public function delete($id)
     { 
-        BarangMasuk::where('id', $id)->update([
+        BarangKeluar::where('id', $id)->update([
           'status'     => '0',
           'deleted_at' => date('Y-m-d H:i:s'),
         ]);
