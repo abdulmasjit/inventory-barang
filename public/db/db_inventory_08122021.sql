@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 15 Nov 2021 pada 14.40
+-- Waktu pembuatan: 07 Des 2021 pada 22.05
 -- Versi server: 10.5.9-MariaDB-log
 -- Versi PHP: 7.4.15
 
@@ -84,8 +84,9 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id_barang`, `kode`, `nama`, `deskripsi`, `id_jenis_barang`, `id_satuan`, `harga_beli`, `harga_jual`, `stok`, `foto`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'B003', 'Mouse Robot', 'Mouse Robot + Bluetooth', 1, 1, 50000, 65000, 100, NULL, '1', '2021-11-09 06:54:58', '2021-11-13 05:54:39'),
-(2, 'B001', 'Keyboard Thinkpad', 'Keyboard Thinkpad Backlight', 2, 1, 100000, 150000, 300, NULL, '1', '2021-11-13 06:16:56', '2021-11-13 06:16:56');
+(1, 'BRG00001', 'Mouse Robot', 'Mouse Robot + Bluetooth', 1, 1, 50000, 65000, 100, NULL, '1', '2021-11-09 06:54:58', '2021-11-13 05:54:39'),
+(2, 'BRG00002', 'Keyboard Thinkpad', 'Keyboard Thinkpad Backlight', 2, 1, 100000, 150000, 300, NULL, '1', '2021-11-13 06:16:56', '2021-11-13 06:16:56'),
+(3, 'BRG00003', 'Laptop Lenovo Thinkpad T440 Ram 8', 'Ram 8, SSD 128, hardisk 500 GB', 17, 8, 3800000, 4200000, 40, NULL, '1', '2021-12-07 14:53:29', '2021-12-07 14:53:29');
 
 -- --------------------------------------------------------
 
@@ -95,15 +96,52 @@ INSERT INTO `barang` (`id_barang`, `kode`, `nama`, `deskripsi`, `id_jenis_barang
 
 CREATE TABLE `barang_keluar` (
   `id` varchar(50) NOT NULL,
-  `nomor_transaksi` varchar(50) NOT NULL,
+  `nomor_transaksi` varchar(20) NOT NULL,
   `tanggal` date DEFAULT NULL,
-  `id_barang` varchar(50) DEFAULT NULL,
-  `jumlah` int(11) DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
-  `created_at` varchar(50) DEFAULT NULL,
-  `updated_at` varchar(50) DEFAULT NULL
+  `status` varchar(2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `barang_keluar`
+--
+
+INSERT INTO `barang_keluar` (`id`, `nomor_transaksi`, `tanggal`, `id_user`, `keterangan`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('374ccb10-7ba3-44cf-9b54-3bcef7b41166', 'TRK20211207003', '2021-12-07', 1, 'Kirim Ke Surabaya', '1', '2021-12-07 15:36:08', '2021-12-07 15:36:58', NULL),
+('72731573-ccc8-4f64-8f9a-ef2e7448336a', 'TRK20211207001', '2021-12-07', 1, 'Kirim Ke Semarang', '1', '2021-12-07 14:15:25', '2021-12-07 15:28:57', '2021-12-07 15:28:57'),
+('b50563c1-91f3-4367-8adb-e08324b6fbd8', 'TRK20211207002', '2021-12-07', 1, 'Kirim Ke Magetan', '1', '2021-12-07 15:13:55', '2021-12-07 15:14:37', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `barang_keluar_detail`
+--
+
+CREATE TABLE `barang_keluar_detail` (
+  `id` varchar(50) NOT NULL,
+  `id_barang_keluar` varchar(50) DEFAULT NULL,
+  `id_barang` int(11) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `barang_keluar_detail`
+--
+
+INSERT INTO `barang_keluar_detail` (`id`, `id_barang_keluar`, `id_barang`, `jumlah`, `keterangan`, `created_at`, `updated_at`) VALUES
+('1b0e1d41-ece8-40f4-b4b1-408169348a89', 'b50563c1-91f3-4367-8adb-e08324b6fbd8', 2, 80, 'Barang 1', '2021-12-07 15:14:37', '2021-12-07 15:14:37'),
+('2196097e-4dd9-49d2-9097-bc22a54be381', 'b50563c1-91f3-4367-8adb-e08324b6fbd8', 1, 101, 'Barang 2', '2021-12-07 15:14:37', '2021-12-07 15:14:37'),
+('6e2e5eb5-dde4-4552-ab5f-8f05d8d4fd7e', '72731573-ccc8-4f64-8f9a-ef2e7448336a', 1, 101, '', '2021-12-07 14:19:39', '2021-12-07 14:19:39'),
+('d90294e0-541b-4a2d-b3e9-370a26f436d0', '374ccb10-7ba3-44cf-9b54-3bcef7b41166', 1, 10, 'Barang 1', '2021-12-07 15:36:58', '2021-12-07 15:36:58'),
+('d947339b-5e90-4ace-8eb7-b36c324bb090', '374ccb10-7ba3-44cf-9b54-3bcef7b41166', 2, 10, 'Barang 2', '2021-12-07 15:36:58', '2021-12-07 15:36:58'),
+('fd5ad6f1-1a12-4ed7-a00f-c4d9de3453cd', '72731573-ccc8-4f64-8f9a-ef2e7448336a', 2, 201, '', '2021-12-07 14:19:39', '2021-12-07 14:19:39');
 
 -- --------------------------------------------------------
 
@@ -113,16 +151,50 @@ CREATE TABLE `barang_keluar` (
 
 CREATE TABLE `barang_masuk` (
   `id` varchar(50) NOT NULL,
-  `nomor_transaksi` varchar(50) NOT NULL,
+  `nomor_transaksi` varchar(20) NOT NULL,
   `tanggal` date DEFAULT NULL,
-  `id_barang` int(11) DEFAULT NULL,
   `id_supplier` int(11) DEFAULT NULL,
-  `jumlah` int(11) DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `status` varchar(2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `barang_masuk`
+--
+
+INSERT INTO `barang_masuk` (`id`, `nomor_transaksi`, `tanggal`, `id_supplier`, `id_user`, `keterangan`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('3a7e955b-b2f7-419a-9388-d0023ea99a14', 'TRM20211207002', '2021-12-07', 2, 1, 'Pengadaan Barang 2', '1', '2021-12-07 15:32:42', '2021-12-07 15:34:42', NULL),
+('8dc645e1-1b38-4de1-af85-934ea9a3ed43', 'TRM20211207001', '2021-12-07', 1, 1, 'Pengadaaan Barang', '1', '2021-12-07 15:13:08', '2021-12-07 15:29:59', '2021-12-07 15:29:59');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `barang_masuk_detail`
+--
+
+CREATE TABLE `barang_masuk_detail` (
+  `id` varchar(50) NOT NULL,
+  `id_barang_masuk` varchar(50) DEFAULT NULL,
+  `id_barang` int(11) DEFAULT NULL,
+  `jumlah` int(11) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `barang_masuk_detail`
+--
+
+INSERT INTO `barang_masuk_detail` (`id`, `id_barang_masuk`, `id_barang`, `jumlah`, `keterangan`, `created_at`, `updated_at`) VALUES
+('00904272-1447-4bce-8c44-016f54598cf9', '8dc645e1-1b38-4de1-af85-934ea9a3ed43', 2, 10, NULL, '2021-12-07 15:13:08', '2021-12-07 15:13:08'),
+('277ac07f-991d-41eb-ab6e-87099cf1ced0', '3a7e955b-b2f7-419a-9388-d0023ea99a14', 2, 80, 'Keyboard', '2021-12-07 15:34:42', '2021-12-07 15:34:42'),
+('de702086-284a-45f4-baf6-dcb4d1d0cab3', '8dc645e1-1b38-4de1-af85-934ea9a3ed43', 1, 20, NULL, '2021-12-07 15:13:08', '2021-12-07 15:13:08'),
+('f426b6b0-6eb5-4f52-a473-2934458f3ab4', '3a7e955b-b2f7-419a-9388-d0023ea99a14', 1, 10, 'Mouse', '2021-12-07 15:34:42', '2021-12-07 15:34:42');
 
 -- --------------------------------------------------------
 
@@ -151,7 +223,7 @@ INSERT INTO `jenis_barang` (`id`, `kode`, `nama`, `status`, `created_at`, `updat
 (5, 'USB', 'USB', NULL, NULL, NULL),
 (6, 'LCD', 'LCD', NULL, NULL, NULL),
 (15, 'PCR', 'Processor', '1', '2021-10-27 07:38:10', '2021-10-27 07:38:10'),
-(17, 'CB 123', 'Coba Barang 123', '1', '2021-11-01 08:44:43', '2021-11-01 08:45:14');
+(17, 'LP', 'Laptop', '1', '2021-11-01 08:44:43', '2021-12-07 14:53:58');
 
 -- --------------------------------------------------------
 
@@ -289,7 +361,8 @@ INSERT INTO `satuan` (`id`, `nama`, `status`, `created_at`, `updated_at`) VALUES
 (4, 'Lusin', '1', '2021-11-06 21:39:16', '2021-11-06 21:39:16'),
 (5, 'Rim', '1', '2021-11-06 21:39:28', '2021-11-06 21:39:28'),
 (6, 'Roll', '1', '2021-11-06 21:39:34', '2021-11-06 21:39:34'),
-(7, 'Pack', '1', '2021-11-06 21:40:06', '2021-11-06 21:41:14');
+(7, 'Pack', '1', '2021-11-06 21:40:06', '2021-11-06 21:41:14'),
+(8, 'Unit', '1', '2021-12-07 14:54:16', '2021-12-07 14:54:16');
 
 -- --------------------------------------------------------
 
@@ -314,7 +387,9 @@ CREATE TABLE `supplier` (
 --
 
 INSERT INTO `supplier` (`id`, `kode`, `nama`, `no_telp`, `alamat`, `keterangan`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'KSB', 'Karunia Sejahtera Bersama', '085334545054', 'Jl Rungkut Tengah No 7', 'HPL', '1', '2021-11-07 13:45:50', '2021-11-07 06:45:50');
+(1, 'KSB', 'CV. Karunia Sejahtera Bersama', '085334545054', 'Jl Rungkut Tengah No 7', 'HPL', '1', '2021-12-07 21:57:48', '2021-11-07 06:45:50'),
+(2, 'ANG', 'CV. Anugerah HPL', '085334545051', 'Jl Kyau Abdul Karim No 6', 'HPL', '1', '2021-12-07 21:57:39', '0000-00-00 00:00:00'),
+(3, 'VS', 'CV. Visitama Solusindo', '085335545087', 'Jl Semolowaru Elok No 1', 'Komputer', '1', '2021-12-07 21:58:34', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -363,16 +438,30 @@ ALTER TABLE `barang`
 -- Indeks untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `barang_keluar_detail`
+--
+ALTER TABLE `barang_keluar_detail`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_barang` (`id_barang`);
+  ADD KEY `FK_barang_keluar_detail_barang_keluar` (`id_barang_keluar`),
+  ADD KEY `FK_barang_keluar_detail_barang` (`id_barang`);
 
 --
 -- Indeks untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_barang` (`id_barang`),
   ADD KEY `id_supplier` (`id_supplier`);
+
+--
+-- Indeks untuk tabel `barang_masuk_detail`
+--
+ALTER TABLE `barang_masuk_detail`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_barang_masuk` (`id_barang_masuk`),
+  ADD KEY `FK_barang_masuk_detail_barang` (`id_barang`);
 
 --
 -- Indeks untuk tabel `jenis_barang`
@@ -431,7 +520,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `jenis_barang`
@@ -461,19 +550,43 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `satuan`
 --
 ALTER TABLE `satuan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `barang_keluar_detail`
+--
+ALTER TABLE `barang_keluar_detail`
+  ADD CONSTRAINT `FK_barang_keluar_detail_barang` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`),
+  ADD CONSTRAINT `FK_barang_keluar_detail_barang_keluar` FOREIGN KEY (`id_barang_keluar`) REFERENCES `barang_keluar` (`id`);
+
+--
+-- Ketidakleluasaan untuk tabel `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  ADD CONSTRAINT `FK_barang_masuk_supplier` FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id`);
+
+--
+-- Ketidakleluasaan untuk tabel `barang_masuk_detail`
+--
+ALTER TABLE `barang_masuk_detail`
+  ADD CONSTRAINT `FK_barang_masuk_detail_barang` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`),
+  ADD CONSTRAINT `FK_barang_masuk_detail_barang_masuk` FOREIGN KEY (`id_barang_masuk`) REFERENCES `barang_masuk` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
