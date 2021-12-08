@@ -14,8 +14,10 @@
   <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/sort-table/sort-table.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/sweetalert2/sweetalert2.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/all/sort-table/sort-table.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/datepicker/bootstrap-datepicker3.min.css') }}">
+
   @yield('css')
 </head>
 <body>
@@ -42,6 +44,7 @@
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/all/sort-table/sort-table.js') }}"></script>
   <script src="{{ asset('assets/all/sweetalert2/sweetalert2.all.min.js') }}"></script>
+  <script src="{{ asset('assets/all/datepicker/bootstrap-datepicker.min.js') }}"></script>
   <script>
     $(document).ready(function() {
       $.ajaxSetup({

@@ -207,4 +207,31 @@ class BarangController extends Controller
         $response['message'] = "Data berhasil dihapus";
         return response()->json($response);
     }
+
+    // Lookup Barang
+    public function lookup_barang(Request $request)
+    {
+        $barang = DB::table('barang')->orderBy('nama', 'asc')->get();
+        $data['barang'] = $barang;
+        return view('lookup.lookup_barang', $data);
+    }
+
+    public function fetch_lookup_barang(Request $request)
+    {
+        $limit = $request->get('limit');
+        $sortBy = $request->get('sortby');
+        $sortType = $request->get('sorttype');
+        $q = $request->get('q');
+        $q = str_replace(" ", "%", $q);
+
+        $data = DB::table('barang as b')
+                    ->select('b.id_barang', 'b.nama', 'b.kode', 'jb.nama as jenis_barang')
+                    ->leftJoin('jenis_barang as jb', 'b.id_jenis_barang', '=', 'jb.id')
+                    ->where(DB::raw("concat(b.id_barang, b.nama, b.kode, jb.nama)"), 'like', '%'.$q.'%')
+                    ->orderBy($sortBy, $sortType)
+                    ->paginate($limit);            
+
+        $data->appends($request->all());
+        return view('lookup.list_data_barang', compact('data'));
+    }
 }

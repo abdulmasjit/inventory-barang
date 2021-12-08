@@ -7,6 +7,8 @@ use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BarangKeluarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,11 +31,16 @@ Route::get('auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::group(['middleware' => 'auth'], function () {
   // dashboard
   Route::get('home', [HomeController::class, 'index'])->name('home');
-  // Master Jenis Barang
+  // Route Master Data
   Route::group(['prefix' => '/master'], function () {
     Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis-barang');
+    Route::get('supplier', [SupplierController::class, 'index'])->name('supplier');
+    Route::get('satuan', [SatuanController::class, 'index'])->name('satuan');
+    Route::get('barang', [BarangController::class, 'index'])->name('barang');
+    Route::get('barang-add', [BarangController::class, 'create'])->name('barang.create');
+    Route::get('barang-edit/{id}', [BarangController::class, 'edit'])->name('barang.edit');
   });
-
+  // Master Jenis Barang
   Route::group(['prefix' => '/jenis-barang'], function () {
     Route::post('/save', [JenisBarangController::class, 'save'])->name('jenis-barang.save');
     Route::post('/update', [JenisBarangController::class, 'update'])->name('jenis-barang.update');
@@ -41,12 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/delete/{id}', [JenisBarangController::class, 'delete'])->name('jenis-barang.delete');
     Route::get('/fetch-data', [JenisBarangController::class, 'fetch_data']);
   });
-
   // Master Satuan
-  Route::group(['prefix' => '/master'], function () {
-    Route::get('satuan', [SatuanController::class, 'index'])->name('satuan');
-  });
-
   Route::group(['prefix' => '/satuan'], function () {
     Route::post('/save', [SatuanController::class, 'save'])->name('satuan.save');
     Route::post('/update', [SatuanController::class, 'update'])->name('satuan.update');
@@ -54,26 +56,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/delete/{id}', [SatuanController::class, 'delete'])->name('satuan.delete');
     Route::get('/fetch-data', [SatuanController::class, 'fetch_data']);
   });
-
   //Master Barang
-  Route::group(['prefix' => '/master'], function () {
-    Route::get('barang', [BarangController::class, 'index'])->name('barang');
-    Route::get('barang-add', [BarangController::class, 'create'])->name('barang.create');
-    Route::get('barang-edit/{id}', [BarangController::class, 'edit'])->name('barang.edit');
-  });
-
   Route::group(['prefix' => '/barang'], function () {
     Route::post('/add', [BarangController::class, 'add'])->name('barang.add');
     Route::post('/update', [BarangController::class, 'update'])->name('barang.update');
     Route::get('/delete/{id}', [BarangController::class, 'delete'])->name('barang.delete');
     Route::get('/fetch-data', [BarangController::class, 'fetch_data']);
   });
-
   // Master Supplier
-  Route::group(['prefix' => '/master'], function () {
-    Route::get('supplier', [SupplierController::class, 'index'])->name('supplier');
-  });
-
   Route::group(['prefix' => '/supplier'], function () {
     Route::post('/save', [SupplierController::class, 'save'])->name('supplier.save');
     Route::post('/update', [SupplierController::class, 'update'])->name('supplier.update');
@@ -81,4 +71,27 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
     Route::get('/fetch-data', [SupplierController::class, 'fetch_data']);
   });
+  // Barang Masuk
+  Route::group(['prefix' => '/barang-masuk'], function() {
+    Route::get('/', [BarangMasukController::class, 'index'])->name('barangMasuk');
+    Route::get('/add', [BarangMasukController::class, 'create'])->name('barangMasuk.create');
+    Route::get('/edit/{id}', [BarangMasukController::class, 'edit'])->name('barangMasuk.edit');
+    Route::get('/fetch-data', [BarangMasukController::class, 'fetch_data']);
+    Route::get('/delete/{id}', [BarangMasukController::class, 'delete'])->name('BarangMasuk.delete');
+    Route::post('/save', [BarangMasukController::class, 'save'])->name('BarangMasuk.save');
+    Route::post('/update', [BarangMasukController::class, 'update'])->name('BarangMasuk.update');
+  });
+  // Barang Keluar
+  Route::group(['prefix' => '/barang-keluar'], function() {
+    Route::get('/', [BarangKeluarController::class, 'index'])->name('barangKeluar');
+    Route::get('/add', [BarangKeluarController::class, 'create'])->name('barangKeluar.create');
+    Route::get('/edit/{id}', [BarangKeluarController::class, 'edit'])->name('barangKeluar.edit');
+    Route::get('/fetch-data', [BarangKeluarController::class, 'fetch_data']);
+    Route::get('/delete/{id}', [BarangKeluarController::class, 'delete'])->name('BarangKeluar.delete');
+    Route::post('/save', [BarangKeluarController::class, 'save'])->name('BarangKeluar.save');
+    Route::post('/update', [BarangKeluarController::class, 'update'])->name('BarangKeluar.update');
+  });
+  // Lookup Barang
+  Route::get('/lookup-barang', [BarangController::class, 'lookup_barang']);
+  Route::get('/lookup-barang/fetch-data', [BarangController::class, 'fetch_lookup_barang']);
 });
