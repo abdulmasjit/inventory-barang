@@ -5,7 +5,21 @@
     Tambah Barang
   </div>
   <div class="card-body">
-    <form class="" id="formData" method="POST">
+    <form class="" id="formData" method="POST" enctype="multipart/form-data">
+      <div class="center">
+        <div class="form-input-container">
+          <div class="d-flex justify-content-center">
+            <input type="hidden" value="{{ isset($data) ? $data['foto'] : '' }}" id="img_preview" name="img_preview" style=" max-width: 300px; margin-bottom: 10px;">
+            <div class="img-holder"></div>
+          </div>
+          <div class="form-input">
+            <label for="product_image">Upload Image</label>
+            <!-- <input type="file" id="file-ip-1" accept="image/*" onchange="showPreview(event);"> -->
+            <input type="file" name="product_image" id="product_image" accept="image/*">
+
+          </div>
+        </div>
+      </div>
       <input type="hidden" name="id_barang" id="id_barang" value="{{ isset($data) ? $data['id_barang'] : '' }}" />
       <div class="row gap-3">
         <div class="col-lg-6">
@@ -74,12 +88,53 @@
 @endsection
 @section('js')
 <script>
+  var img_preview = $('#img_preview');
+  var img_holder = $('.img-holder');
   $(document).ready(function() {
     // fetch_data(1)
     $(document).on('change', '#id_jenis_barang', function() {
       var air_id = $('#id_jenis_barang').val();
     })
+    // console.log('lklk', $('#img_preview'))
+    if (img_preview.val()) {
+      $('<img/>', {
+        'src': `/storage/files/barang/${img_preview.val()}`,
+        'class': 'img-fluid',
+        'style': 'max-width:300px;margin-bottom:10px;'
+      }).appendTo(img_holder);
+      img_holder.show();
+    }
   })
+  //Reset input file
+  $('input[type="file"][name="product_image"]').val('');
+  //Image preview
+  $('input[type="file"][name="product_image"]').on('change', function() {
+    var img_path = $(this)[0].value;
+    var img_holder = $('.img-holder');
+    var img_preview = $('#img_preview');
+    var extension = img_path.substring(img_path.lastIndexOf('.') + 1).toLowerCase();
+    console.log(img_preview.val())
+    if (extension == 'jpeg' || extension == 'jpg' || extension == 'png') {
+      if (typeof(FileReader) != 'undefined') {
+        img_holder.empty();
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          $('<img/>', {
+            'src': e.target.result,
+            'class': 'img-fluid',
+            'style': 'max-width:300px;margin-bottom:10px;'
+          }).appendTo(img_holder);
+        }
+        img_holder.show();
+        $('input[name="img_preview"]').val('');
+        reader.readAsDataURL($(this)[0].files[0]);
+      } else {
+        $(img_holder).html('This browser does not support FileReader');
+      }
+    } else {
+      $(img_holder).empty();
+    }
+  });
   $(document).on('submit', '#formData', function(event) {
     event.preventDefault();
     const modeform = $('#modeform').val();
@@ -106,7 +161,7 @@
           });
           // $('#formModal').modal('hide');
           // fetch_data(1);
-          location.href = base_url + `/master/barang`
+          // location.href = base_url + `/master/barang`
         } else {
           Swal.fire({
             icon: 'error',
@@ -122,3 +177,50 @@
   });
 </script>
 @endsection
+
+<style>
+  .center {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+  .form-input-container {
+    width: 350px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: -3px -3px 7px rgba(94, 104, 121, 0.377),
+      3px 3px 7px rgba(94, 104, 121, 0.377);
+  }
+
+  .form-input input {
+    display: none;
+
+  }
+
+  .form-input label {
+    display: block;
+    width: 45%;
+    height: 45px;
+    margin-left: 25%;
+    line-height: 50px;
+    text-align: center;
+    background: #1172c2;
+
+    color: #fff;
+    font-size: 15px;
+    text-transform: Uppercase;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* .img-holder {
+    width: 100%;
+    display: none;
+    height: 200px;
+    margin-bottom: 30px;
+  } */
+</style>
