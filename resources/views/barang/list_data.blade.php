@@ -5,7 +5,7 @@
   @foreach($data as $row)
   <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
     <div class="card">
-      <img src="/storage/files/barang/{{$row->foto}}" class="card-img-top" alt="..." style="min-height: 200px; max-height: 200px;">
+      <img src="{{url('').'/'.$row->foto}}" class="card-img-top" alt="..." style="min-height: 200px; max-height: 200px;">
       <div class="card-body">
         <h5 class="card-title">{{ $row->nama }}</h5>
         <div style="width: 100%;">

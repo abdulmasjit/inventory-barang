@@ -73,8 +73,7 @@
           </div>
           <div class="mb-3">
             <label for="deskripsi" class="form-label">Deskripsi</label>
-            <textarea id="deskripsi" name="deskripsi" class="form-control" class="w-full" value="{{ isset($data) ? $data['deskripsi'] : null }}" required />
-            </textarea>
+            <textarea id="deskripsi" name="deskripsi" class="form-control" class="w-full" required >{{ isset($data) ? $data['deskripsi'] : null }}</textarea>
           </div>
         </div>
       </div>
@@ -98,7 +97,7 @@
     // console.log('lklk', $('#img_preview'))
     if (img_preview.val()) {
       $('<img/>', {
-        'src': `/storage/files/barang/${img_preview.val()}`,
+        'src': `${base_url}/${img_preview.val()}`,
         'class': 'img-fluid',
         'style': 'max-width:300px;margin-bottom:10px;'
       }).appendTo(img_holder);
@@ -161,7 +160,7 @@
           });
           // $('#formModal').modal('hide');
           // fetch_data(1);
-          // location.href = base_url + `/master/barang`
+          location.href = base_url + `/master/barang`
         } else {
           Swal.fire({
             icon: 'error',

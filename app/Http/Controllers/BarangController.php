@@ -73,17 +73,18 @@ class BarangController extends Controller
 
     public function uploadPhoto($prams)
     {
-        $path = 'files/barang/';
+        $path = 'assets/images/barang/';
         $file = $prams->file('product_image');
         $fileExist = $prams->img_preview;
         // echo(var_dump($request->file('product_image')));
         $file_name = $fileExist;
         if ($file) {
-            $file_name = time() . '_' . $file->getClientOriginalName();
+            $splitType = explode(".", $file->getClientOriginalName());
+            $file_name = 'BRG_' . time() . '.' . $splitType[count($splitType) - 1];
             //    $upload = $file->storeAs($path, $file_name);
-            $upload = $file->storeAs($path, $file_name, 'public');
+            $upload = $file->move($path, $file_name);
         }
-        return $file_name;
+        return $path . $file_name;
     }
 
     public function add(Request $request)
@@ -134,7 +135,7 @@ class BarangController extends Controller
             $data->id_jenis_barang = $request->id_jenis_barang;
             $data->id_satuan = $request->id_satuan;
             $data->stok = $request->stok;
-            $data->foto = $this->uploadPhoto($request);
+            $data->foto = $this->uploadPhoto($request); // Cekking untuk upload file
             $data->deskripsi = $request->deskripsi;
             $data->harga_beli = $request->harga_beli;
             $data->harga_jual = $request->harga_jual;
@@ -193,8 +194,12 @@ class BarangController extends Controller
             }
 
             $id = $request->id_barang;
-            $data = Barang::find($id)
-                // JenisBarang::where('id', $id)
+            // echo dd($id);
+            // $file = $request->file('product_image');
+            // if ($file) {
+            // }
+            // $data = Barang::find($id)
+            Barang::where('id_barang', $id)
                 ->update([
                     'kode' => $request->kode,
                     'nama' => $request->nama,
