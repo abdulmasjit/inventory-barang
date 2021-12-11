@@ -56,7 +56,7 @@ class BarangController extends Controller
     {
         $id = $request->id;
         $dataTypeItems = $this->fecth_list_jenis_barang();
-        $dataUnits = $this->fecth_list_satuan();   
+        $dataUnits = $this->fecth_list_satuan();
         return view('barang.form_barang', compact('dataTypeItems', 'dataUnits'));
     }
 
@@ -69,6 +69,22 @@ class BarangController extends Controller
             $data = Barang::find($id);
         }
         return view('barang.form_barang', compact('data', 'dataTypeItems', 'dataUnits'));
+    }
+
+    public function uploadPhoto($prams)
+    {
+        $path = 'assets/images/barang/';
+        $file = $prams->file('product_image');
+        $fileExist = $prams->img_preview;
+        // echo(var_dump($request->file('product_image')));
+        $file_name = $fileExist;
+        if ($file) {
+            $splitType = explode(".", $file->getClientOriginalName());
+            $file_name = 'BRG_' . time() . '.' . $splitType[count($splitType) - 1];
+            //    $upload = $file->storeAs($path, $file_name);
+            $upload = $file->move($path, $file_name);
+        }
+        return $path . $file_name;
     }
 
     public function add(Request $request)
@@ -119,6 +135,7 @@ class BarangController extends Controller
             $data->id_jenis_barang = $request->id_jenis_barang;
             $data->id_satuan = $request->id_satuan;
             $data->stok = $request->stok;
+            $data->foto = $this->uploadPhoto($request); // Cekking untuk upload file
             $data->deskripsi = $request->deskripsi;
             $data->harga_beli = $request->harga_beli;
             $data->harga_jual = $request->harga_jual;
@@ -177,14 +194,19 @@ class BarangController extends Controller
             }
 
             $id = $request->id_barang;
-            $data = Barang::find($id)
-                // JenisBarang::where('id', $id)
+            // echo dd($id);
+            // $file = $request->file('product_image');
+            // if ($file) {
+            // }
+            // $data = Barang::find($id)
+            Barang::where('id_barang', $id)
                 ->update([
                     'kode' => $request->kode,
                     'nama' => $request->nama,
                     'id_jenis_barang' => $request->id_jenis_barang,
                     'id_satuan' => $request->id_satuan,
                     'stok' => $request->stok,
+                    'foto' => $this->uploadPhoto($request),
                     'deskripsi' => $request->deskripsi,
                     'harga_beli' => $request->harga_beli,
                     'harga_jual' => $request->harga_jual,
@@ -201,7 +223,7 @@ class BarangController extends Controller
     }
 
     public function delete($id)
-    { 
+    {
         Barang::where("id_barang", $id)->delete();
         $response['success'] = true;
         $response['message'] = "Data berhasil dihapus";
@@ -225,11 +247,11 @@ class BarangController extends Controller
         $q = str_replace(" ", "%", $q);
 
         $data = DB::table('barang as b')
-                    ->select('b.id_barang', 'b.nama', 'b.kode', 'jb.nama as jenis_barang')
-                    ->leftJoin('jenis_barang as jb', 'b.id_jenis_barang', '=', 'jb.id')
-                    ->where(DB::raw("concat(b.id_barang, b.nama, b.kode, jb.nama)"), 'like', '%'.$q.'%')
-                    ->orderBy($sortBy, $sortType)
-                    ->paginate($limit);            
+            ->select('b.id_barang', 'b.nama', 'b.kode', 'jb.nama as jenis_barang')
+            ->leftJoin('jenis_barang as jb', 'b.id_jenis_barang', '=', 'jb.id')
+            ->where(DB::raw("concat(b.id_barang, b.nama, b.kode, jb.nama)"), 'like', '%' . $q . '%')
+            ->orderBy($sortBy, $sortType)
+            ->paginate($limit);
 
         $data->appends($request->all());
         return view('lookup.list_data_barang', compact('data'));

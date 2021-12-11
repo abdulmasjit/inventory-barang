@@ -1,41 +1,56 @@
-<div class="table-responsive">
-  <table class="table table-bordered">
-    <thead class="tr-head">
-      <tr>
-        <th width="5%" class="text-center sortable" id="column_created" data-sort="desc" onclick="sort_table('#column_created','created_at')">No </th>
-        <th width="20%" class="sortable" id="column_kode" data-sort="" onclick="sort_table('#column_kode','kode')">Kode </th>
-        <th width="20%" class="sortable" id="column_nama" data-sort="" onclick="sort_table('#column_nama','nama')">Nama </th>
-        <th width="15%" class="sortable" id="column_kode" data-sort="" onclick="sort_table('#column_kode','nama_jenis_barang')">Jenis Barang </th>
-        <th width="15%" class="sortable" id="column_nama" data-sort="" onclick="sort_table('#column_nama','harga_beli')">Harga Beli </th>
-        <th width="15%" class="sortable" id="column_nama" data-sort="" onclick="sort_table('#column_nama','harga_jual')">Harga Jual </th>
-        <th class="text-center" width="10%">Aksi</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php $no = $data->firstItem();
-      $fmt = new NumberFormatter('id_ID', NumberFormatter::CURRENCY); ?>
-      @if (count($data) > 0)
-      @foreach($data as $row)
-      <tr>
-        <td class="text-center">{{ $no++ }}.</td>
-        <td>{{ $row->kode }}</td>
-        <td>{{ $row->nama }}</td>
-        <td>{{ $row->nama_jenis_barang }}</td>
-        <td>{{ $fmt->formatCurrency($row->harga_jual, 'IDR') }}</td>
-        <td>{{ $fmt->formatCurrency($row->harga_beli, 'IDR') }}</td>
-        <td class="text-center">
-          <a href="javascript:;" data-id="<?= $row->id_barang ?>" data-name="<?= $row->nama ?>" class="btn btn-sm btn-warning btn-ubah" data-toggle="tooltip" title="Edit Barang"><i style="color:#fff;" class="fa fa-edit"></i></a>
-          <a href="javascript:;" data-id="<?= $row->id_barang ?>" data-name="<?= $row->nama ?>" class="btn btn-sm btn-danger btn-hapus" data-toggle="tooltip" title="Hapus Barang"><i class="fa fa-trash"></i></a>
-        </td>
-      </tr>
-      @endforeach
-      @else
-      <tr>
-        <td colspan="4">Data tidak ditemukan!</td>
-      </tr>
-      @endif
-    </tbody>
-  </table>
+<div class="row g-4 align-items">
+  <?php $no = $data->firstItem();
+  $fmt = new NumberFormatter('id_ID', NumberFormatter::CURRENCY); ?>
+  @if (count($data) > 0)
+  @foreach($data as $row)
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+    <div class="card">
+      <img src="{{url('').'/'.$row->foto}}" class="card-img-top" alt="..." style="min-height: 200px; max-height: 200px;">
+      <div class="card-body">
+        <h5 class="card-title">{{ $row->nama }}</h5>
+        <div style="width: 100%;">
+          <div class="d-flex" style="width: 100%;">
+            <div style="width: 40%;">
+              <p class="fw-normal">
+                Jenis Barang
+              </p>
+            </div>
+            <div>
+              <p class="fw-normal">{{ $row->nama_jenis_barang }}</p>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div style="width: 40%;">
+              <p class="fw-normal">
+                Harga Jual
+              </p>
+            </div>
+            <div>
+              <p class="fw-normal">{{ $fmt->formatCurrency($row->harga_jual, 'IDR') }}</p>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div style="width: 40%;">
+              <p class="fw-normal">
+                Harga Beli
+              </p>
+            </div>
+            <div>
+              <p class="fw-normal">{{ $fmt->formatCurrency($row->harga_beli, 'IDR') }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-right bg-transparent">
+        <a href="javascript:;" data-id="<?= $row->id_barang ?>" data-name="<?= $row->nama ?>" class="btn btn-sm btn-warning btn-ubah" data-toggle="tooltip" title="Edit Barang"><i style="color:#fff;" class="fa fa-edit"></i></a>
+        <a href="javascript:;" data-id="<?= $row->id_barang ?>" data-name="<?= $row->nama ?>" class="btn btn-sm btn-danger btn-hapus" data-toggle="tooltip" title="Hapus Barang"><i class="fa fa-trash"></i></a>
+      </div>
+    </div>
+  </div>
+  @endforeach
+  @else
+  <span class="text-center">Data tidak ditemukan!</span>
+  @endif
 </div>
 @if (count($data) > 0)
 <div class="row">
