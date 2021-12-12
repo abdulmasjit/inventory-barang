@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Models\BarangKeluar;
 use App\Models\BarangKeluarDetail;
+use App\Models\BarangHistory;
 use App\Models\MainModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -84,10 +85,11 @@ class BarangKeluarController extends Controller
               $BarangKeluar->save();
               
               // Save Detail
-              $BarangKeluarDetail = new BarangKeluarDetail();    
+              $BarangKeluarDetail = new BarangKeluarDetail();
+              $BarangHistory = new BarangHistory();    
               $jml = count($barang);
               for ($i=0; $i < $jml; $i++) { 
-                $dataDetail = array(
+                $dataDetail[] = array(
                     'id'               => Uuid::uuid4()->toString(),
                     'id_barang_keluar' => $id_barang_keluar, 
                     'id_barang'        => $barang[$i],
@@ -96,8 +98,24 @@ class BarangKeluarController extends Controller
                     'created_at'       => date('Y-m-d H:i:s'),
                     'updated_at'       => date('Y-m-d H:i:s'),
                 );
-                $BarangKeluarDetail->insert($dataDetail);
+                
+                $casting_qty = intval('-' . $qty[$i]);
+                $dataHistory[] = array(
+                  'id'              => Uuid::uuid4()->toString(),
+                  'tanggal'         => date('Y-m-d'), 
+                  'id_barang'       => $barang[$i],
+                  'keterangan'      => 'Barang Keluar',
+                  'qty'             => $casting_qty,
+                  'harga'           => null,
+                  'sumber'          => 'TBK', // Penjualan / Barang Keluar
+                  'id_transaksi'    => $id_barang_keluar,
+                  'created_at'      => date('Y-m-d H:i:s'),
+                  'updated_at'      => date('Y-m-d H:i:s'),
+                );
               }
+              
+              $BarangKeluarDetail->insert($dataDetail);
+              $BarangHistory->insert($dataHistory);
               
               $response['success'] = true;
               $response['message'] = "Data berhasil disimpan";
@@ -136,11 +154,13 @@ class BarangKeluarController extends Controller
 
             // Delete Data
             BarangKeluarDetail::where("id_barang_keluar", $id)->delete();
+            BarangHistory::where("id_transaksi", $id)->delete();
             // Save Detail
             $BarangKeluarDetail = new BarangKeluarDetail();    
+            $BarangHistory = new BarangHistory();
             $jml = count($barang);
             for ($i=0; $i < $jml; $i++) { 
-              $dataDetail = array(
+              $dataDetail[] = array(
                   'id'               => Uuid::uuid4()->toString(),
                   'id_barang_keluar' => $id, 
                   'id_barang'        => $barang[$i],
@@ -149,8 +169,24 @@ class BarangKeluarController extends Controller
                   'created_at'       => date('Y-m-d H:i:s'),
                   'updated_at'       => date('Y-m-d H:i:s'),
               );
-              $BarangKeluarDetail->insert($dataDetail);
+
+              $casting_qty = intval('-' . $qty[$i]);
+              $dataHistory[] = array(
+                  'id'              => Uuid::uuid4()->toString(),
+                  'tanggal'         => date('Y-m-d'), 
+                  'id_barang'       => $barang[$i],
+                  'keterangan'      => 'Barang Keluar',
+                  'qty'             => $casting_qty,
+                  'harga'           => null,
+                  'sumber'          => 'TBK', // Penjualan / Barang Keluar
+                  'id_transaksi'    => $id,
+                  'created_at'      => date('Y-m-d H:i:s'),
+                  'updated_at'      => date('Y-m-d H:i:s'),
+              );
             }
+
+            $BarangKeluarDetail->insert($dataDetail);
+            $BarangHistory->insert($dataHistory);
             
             $response['success'] = true;
             $response['message'] = "Data berhasil diubah";

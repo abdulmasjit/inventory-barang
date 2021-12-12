@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Models\BarangMasuk;
 use App\Models\BarangMasukDetail;
+use App\Models\BarangHistory;
 use App\Models\MainModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -90,9 +91,10 @@ class BarangMasukController extends Controller
               
               // Save Detail
               $BarangMasukDetail = new BarangMasukDetail();    
+              $BarangHistory = new BarangHistory();    
               $jml = count($barang);
               for ($i=0; $i < $jml; $i++) { 
-                $dataDetail = array(
+                $dataDetail[] = array(
                     'id'              => Uuid::uuid4()->toString(),
                     'id_barang_masuk' => $id_barang_masuk, 
                     'id_barang'       => $barang[$i],
@@ -101,8 +103,23 @@ class BarangMasukController extends Controller
                     'created_at'      => date('Y-m-d H:i:s'),
                     'updated_at'      => date('Y-m-d H:i:s'),
                 );
-                $BarangMasukDetail->insert($dataDetail);
+
+                $dataHistory[] = array(
+                  'id'              => Uuid::uuid4()->toString(),
+                  'tanggal'         => date('Y-m-d'), 
+                  'id_barang'       => $barang[$i],
+                  'keterangan'      => 'Barang Masuk',
+                  'qty'             => $qty[$i],
+                  'harga'           => null,
+                  'sumber'          => 'TBM', // Pembelian / Barang Masuk
+                  'id_transaksi'    => $id_barang_masuk,
+                  'created_at'      => date('Y-m-d H:i:s'),
+                  'updated_at'      => date('Y-m-d H:i:s'),
+                );
               }
+
+              $BarangMasukDetail->insert($dataDetail);
+              $BarangHistory->insert($dataHistory);
               
               $response['success'] = true;
               $response['message'] = "Data berhasil disimpan";
@@ -142,11 +159,13 @@ class BarangMasukController extends Controller
 
             // Delete Data
             BarangMasukDetail::where("id_barang_masuk", $id)->delete();
+            BarangHistory::where("id_transaksi", $id)->delete();
             // Save Detail
-            $BarangMasukDetail = new BarangMasukDetail();    
+            $BarangMasukDetail = new BarangMasukDetail();
+            $BarangHistory = new BarangHistory();     
             $jml = count($barang);
             for ($i=0; $i < $jml; $i++) { 
-              $dataDetail = array(
+              $dataDetail[] = array(
                   'id'              => Uuid::uuid4()->toString(),
                   'id_barang_masuk' => $id, 
                   'id_barang'       => $barang[$i],
@@ -155,8 +174,23 @@ class BarangMasukController extends Controller
                   'created_at'      => date('Y-m-d H:i:s'),
                   'updated_at'      => date('Y-m-d H:i:s'),
               );
-              $BarangMasukDetail->insert($dataDetail);
+
+              $dataHistory[] = array(
+                'id'              => Uuid::uuid4()->toString(),
+                'tanggal'         => date('Y-m-d'), 
+                'id_barang'       => $barang[$i],
+                'keterangan'      => 'Barang Masuk',
+                'qty'             => $qty[$i],
+                'harga'           => null,
+                'sumber'          => 'TBM', // Pembelian / Barang Masuk
+                'id_transaksi'    => $id,
+                'created_at'      => date('Y-m-d H:i:s'),
+                'updated_at'      => date('Y-m-d H:i:s'),
+              );
             }
+            
+            $BarangMasukDetail->insert($dataDetail);
+            $BarangHistory->insert($dataHistory);
             
             $response['success'] = true;
             $response['message'] = "Data berhasil diubah";
