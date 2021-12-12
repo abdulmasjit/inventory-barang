@@ -9,6 +9,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,4 +95,7 @@ Route::group(['middleware' => 'auth'], function () {
   // Lookup Barang
   Route::get('/lookup-barang', [BarangController::class, 'lookup_barang']);
   Route::get('/lookup-barang/fetch-data', [BarangController::class, 'fetch_lookup_barang']);
+  // Report
+  Route::get('/laporan', [ReportController::class, 'index']);
+
 });
