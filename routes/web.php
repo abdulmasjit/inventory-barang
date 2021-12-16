@@ -97,5 +97,10 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/lookup-barang/fetch-data', [BarangController::class, 'fetch_lookup_barang']);
   // Report
   Route::get('/laporan', [ReportController::class, 'index']);
-
+  
 });
+
+Route::get('/report/barang-masuk', [ReportController::class, 'report_barang_masuk']);
+Route::get('/report/barang-keluar', [ReportController::class, 'report_barang_keluar']);
+Route::get('/report/kartu-stok', [ReportController::class, 'report_kartu_stok']);
+Route::get('/report/kartu-stok-perbarang', [ReportController::class, 'report_kartu_stok_perbarang']);
