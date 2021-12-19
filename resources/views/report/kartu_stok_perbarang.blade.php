@@ -82,14 +82,17 @@
           $total = 0;
         ?>
         @foreach ($data as $row)
-          <?php $no++; ?>
+          <?php 
+            $no++;
+            $total += $row->qty;
+          ?>
           <tr>
               <td class="text-center">{{ $no }}.</td>
               <td class="text-center">{{ $row->tanggal }}</td>
-              <td>{{ $row->nama_barang }}</td>
-              <td class="text-center">PJ</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
+              <td>{{ $row->keterangan }}</td>
+              <td class="text-center">{{ $row->sumber }}</td>
+              <td class="text-center">{{ ($row->qty>0) ? $row->qty : '' }}</td>
+              <td class="text-center">{{ ($row->qty<0) ? abs($row->qty) : '' }}</td>
           </tr>
         @endforeach
         <tr>
@@ -102,7 +105,7 @@
         </tr>
         <tr>
           <td colspan="4" class="text-right">Stok Akhir</td>
-          <td colspan="2" class="text-right">0</td>
+          <td colspan="2" class="text-right">{{ $total }}</td>
         </tr>
     </tbody>
 </table>

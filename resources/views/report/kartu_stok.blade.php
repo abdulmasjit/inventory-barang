@@ -74,8 +74,8 @@
         <tr>
             <th width="5%" class="text-center">Satuan</th>
             <th width="5%" class="text-center">Awal</th>
-            <th width="5%" class="text-center">In</th>
-            <th width="5%" class="text-center">Out</th>
+            <th width="5%" class="text-center">Masuk</th>
+            <th width="5%" class="text-center">Keluar</th>
             <th width="5%" class="text-center">Rusak/Hilang</th>
             <th width="5%" class="text-center">Akhir</th>
             <th width="5%" class="text-center">Minimum</th>
@@ -93,12 +93,12 @@
               <td class="text-center">{{ $row->kode_barang }}</td>
               <td>{{ $row->nama_barang }}</td>
               <td class="text-center">{{ $row->satuan }}</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
+              <td class="text-center">{{ $row->stok_awal }}</td>
+              <td class="text-center">{{ $row->masuk }}</td>
+              <td class="text-center">{{ $row->keluar*(-1) }}</td>
+              <td class="text-center">{{ $row->rusak_hilang }}</td>
+              <td class="text-center">{{ $row->stok_akhir }}</td>
+              <td class="text-center">{{ $row->stok_minimum }}</td>
           </tr>
         @endforeach
         <tr>
