@@ -50,6 +50,7 @@ class ReportController extends Controller
         $id_barang = $request->get('id_barang');
 
         if(isset($id_barang)){
+          $data['barang'] = Barang::find($id_barang);
           $data['data'] = $this->m_barang->getReportStokPerbarang($tanggal_awal, $tanggal_akhir, $id_barang);
           $pdf = PDF::loadview('report.kartu_stok_perbarang', $data)->setPaper('A4','potrait');
         }else{

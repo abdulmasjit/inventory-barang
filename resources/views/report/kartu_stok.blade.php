@@ -95,8 +95,8 @@
               <td class="text-center">{{ $row->satuan }}</td>
               <td class="text-center">{{ $row->stok_awal }}</td>
               <td class="text-center">{{ $row->masuk }}</td>
-              <td class="text-center">{{ $row->keluar*(-1) }}</td>
-              <td class="text-center">{{ $row->rusak_hilang }}</td>
+              <td class="text-center">{{ abs($row->keluar) }}</td>
+              <td class="text-center">{{ abs($row->rusak_hilang) }}</td>
               <td class="text-center">{{ $row->stok_akhir }}</td>
               <td class="text-center">{{ $row->stok_minimum }}</td>
           </tr>

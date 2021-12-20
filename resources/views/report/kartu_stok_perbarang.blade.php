@@ -62,6 +62,7 @@
 </table>
 <hr class="line-title">
 <hr class="line-title-child" style="margin-bottom:15px;">
+<p style="font-family: Arial, Helvetica, sans-serif; font-size:13px">{{ $barang['kode'] }} - {{ $barang['nama'] }}</p>
 <table class="table">
     <thead class="head-table">
         <tr>

@@ -10,6 +10,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\MutasiStokController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/delete/{id}', [BarangKeluarController::class, 'delete'])->name('BarangKeluar.delete');
     Route::post('/save', [BarangKeluarController::class, 'save'])->name('BarangKeluar.save');
     Route::post('/update', [BarangKeluarController::class, 'update'])->name('BarangKeluar.update');
+  });
+  // Mutasi Stok
+  Route::group(['prefix' => '/mutasi-stok'], function() {
+    Route::get('/', [MutasiStokController::class, 'index'])->name('mutasiStok');
+    Route::get('/add', [MutasiStokController::class, 'create'])->name('mutasiStok.create');
+    Route::get('/edit/{id}', [MutasiStokController::class, 'edit'])->name('mutasiStok.edit');
+    Route::get('/fetch-data', [MutasiStokController::class, 'fetch_data']);
+    Route::get('/delete/{id}', [MutasiStokController::class, 'delete'])->name('mutasiStok.delete');
+    Route::post('/save', [MutasiStokController::class, 'save'])->name('mutasiStok.save');
+    Route::post('/update', [MutasiStokController::class, 'update'])->name('mutasiStok.update');
   });
   // Lookup Barang
   Route::get('/lookup-barang', [BarangController::class, 'lookup_barang']);
