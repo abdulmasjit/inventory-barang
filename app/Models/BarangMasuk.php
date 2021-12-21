@@ -44,7 +44,7 @@ class BarangMasuk extends Model
       );
     }
 
-    function getReportBarangMasuk($tglAwal="", $tglAkhir=""){
+    function getReportBarangMasuk($tanggal_awal, $tanggal_akhir){
       $q = DB::select("
           SELECT bm.id, bm.nomor_transaksi, bm.tanggal, b.nama AS nama_barang, bmd.jumlah, st.nama as satuan, coalesce(bmd.harga, 0) AS harga, bm.id_supplier, bm.id_user, bm.keterangan, bm.status, s.nama AS nama_supplier FROM barang_masuk bm
           LEFT JOIN barang_masuk_detail bmd ON bm.id = bmd.id_barang_masuk
@@ -52,6 +52,7 @@ class BarangMasuk extends Model
           LEFT JOIN satuan st ON b.id_satuan = st.id
           LEFT JOIN supplier s ON bm.id_supplier = s.id
           WHERE bm.status = '1'
+          AND bm.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir'
           ORDER BY bm.created_at asc
       ");
       return $q;

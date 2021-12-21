@@ -6,6 +6,7 @@ use Validator;
 use App\Models\BarangMasuk;
 use App\Models\BarangKeluar;
 use App\Models\Barang;
+use App\Models\MutasiStok;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
@@ -17,6 +18,7 @@ class ReportController extends Controller
       $this->m_barang_masuk = new BarangMasuk();
       $this->m_barang_keluar = new BarangKeluar();
       $this->m_barang = new Barang();
+      $this->m_mutasi = new MutasiStok();
     }
 
     public function index(Request $request)
@@ -31,14 +33,20 @@ class ReportController extends Controller
 
     public function report_barang_masuk(Request $request)
     {   
-        $data['data'] = $this->m_barang_masuk->getReportBarangMasuk("", "");
+        $tanggal_awal = $request->get('tanggal_awal');
+        $tanggal_akhir = $request->get('tanggal_akhir');
+        $data['tanggal'] = $this->format_date($tanggal_awal, 'd/m/Y') . " - " . $this->format_date($tanggal_akhir, 'd/m/Y'); 
+        $data['data'] = $this->m_barang_masuk->getReportBarangMasuk($tanggal_awal, $tanggal_akhir);
         $pdf = PDF::loadview('report.laporan_barang_masuk', $data)->setPaper('A4','potrait');
         return $pdf->stream();
     }
 
     public function report_barang_keluar(Request $request)
     {   
-        $data['data'] = $this->m_barang_keluar->getReportBarangKeluar("", "");
+        $tanggal_awal = $request->get('tanggal_awal');
+        $tanggal_akhir = $request->get('tanggal_akhir');
+        $data['tanggal'] = $this->format_date($tanggal_awal, 'd/m/Y') . " - " . $this->format_date($tanggal_akhir, 'd/m/Y'); 
+        $data['data'] = $this->m_barang_keluar->getReportBarangKeluar($tanggal_awal, $tanggal_akhir);
         $pdf = PDF::loadview('report.laporan_barang_keluar', $data)->setPaper('A4','potrait');
         return $pdf->stream();
     }
@@ -48,6 +56,7 @@ class ReportController extends Controller
         $tanggal_awal = $request->get('tanggal_awal');
         $tanggal_akhir = $request->get('tanggal_akhir');
         $id_barang = $request->get('id_barang');
+        $data['tanggal'] = $this->format_date($tanggal_awal, 'd/m/Y') . " - " . $this->format_date($tanggal_akhir, 'd/m/Y'); 
 
         if(isset($id_barang)){
           $data['barang'] = Barang::find($id_barang);
@@ -59,5 +68,21 @@ class ReportController extends Controller
         }
       
         return $pdf->stream();
+    }
+
+    public function report_mutasi_stok(Request $request)
+    {   
+        $tanggal_awal = $request->get('tanggal_awal');
+        $tanggal_akhir = $request->get('tanggal_akhir');
+        $data['tanggal'] = $this->format_date($tanggal_awal, 'd/m/Y') . " - " . $this->format_date($tanggal_akhir, 'd/m/Y'); 
+        $data['data'] = $this->m_mutasi->getReportMutasiStok($tanggal_awal, $tanggal_akhir);
+        $pdf = PDF::loadview('report.laporan_mutasi_stok', $data)->setPaper('A4','potrait');
+        return $pdf->stream();
+    }
+
+    function format_date($val, $format){
+      $time = strtotime($val);
+      $tanggal = date($format, $time);
+      return $tanggal;
     }
 }

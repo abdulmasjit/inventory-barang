@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Barang extends Model
 {
@@ -55,5 +56,41 @@ class Barang extends Model
 
       $result = DB::select($q);
       return $result;
+    }
+
+    function getListStokBarang($keyword="", $sortby="", $sorttype=""){
+      $q = DB::select("
+          SELECT b.id_barang, b.kode, b.nama, b.id_jenis_barang, js.nama AS jenis_barang, b.id_satuan, s.nama AS satuan,
+          b.harga_jual, coalesce(b.stok_minimum, 0) as stok_minimum, bhs.stok FROM barang b
+          LEFT JOIN jenis_barang js ON b.id_jenis_barang = js.id
+          LEFT JOIN satuan s ON b.id_satuan = s.id
+          LEFT JOIN (
+            SELECT id_barang, SUM(qty) AS stok FROM barang_history
+            GROUP BY id_barang
+          ) bhs ON b.id_barang = bhs.id_barang
+          WHERE CONCAT(b.kode, b.nama, js.nama) LIKE '%$keyword%'
+          AND b.status = '1'
+          ORDER BY $sortby $sorttype
+      ");
+      return $q;
+    }
+
+    function arrayPaginator($array, $request) {
+      $page = (int) $request->get('page', 1);
+      $perPage = (int) $request->get('limit');
+      $offset = ($page * $perPage) - $perPage;
+
+      return new LengthAwarePaginator(
+          array_slice(
+              $array,
+              $offset,
+              $perPage,
+              true
+          ),
+          count($array),
+          $perPage,
+          $page,
+          ['path' => $request->url(), 'query' => $request->query()]
+      );
     }
 }

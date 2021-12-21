@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis-barang');
     Route::get('supplier', [SupplierController::class, 'index'])->name('supplier');
     Route::get('satuan', [SatuanController::class, 'index'])->name('satuan');
-    Route::get('barang', [BarangController::class, 'index'])->name('barang');
+    Route::get('barangs', [BarangController::class, 'index'])->name('barang');
     Route::get('barang-add', [BarangController::class, 'create'])->name('barang.create');
     Route::get('barang-edit/{id}', [BarangController::class, 'edit'])->name('barang.edit');
   });
@@ -64,6 +64,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/update', [BarangController::class, 'update'])->name('barang.update');
     Route::get('/delete/{id}', [BarangController::class, 'delete'])->name('barang.delete');
     Route::get('/fetch-data', [BarangController::class, 'fetch_data']);
+    // Stok Barang
+    Route::get('/stok', [BarangController::class, 'stok_barang']);
+    Route::get('/fetch-data-stok', [BarangController::class, 'list_stok_barang']);
   });
   // Master Supplier
   Route::group(['prefix' => '/supplier'], function () {
@@ -114,3 +117,4 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/report/barang-masuk', [ReportController::class, 'report_barang_masuk']);
 Route::get('/report/barang-keluar', [ReportController::class, 'report_barang_keluar']);
 Route::get('/report/kartu-stok', [ReportController::class, 'report_kartu_stok']);
+Route::get('/report/mutasi-stok', [ReportController::class, 'report_mutasi_Stok']);

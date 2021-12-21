@@ -55,7 +55,7 @@
     <tr>
         <td width="100%" class="text-center" style="padding-left:5px;"> 
             <span style="font-size:13px"><strong>LAPORAN BARANG KELUAR</strong></span> <br>
-            <span style="font-size:13px">01/12/2021 - 31/12/2021</span> <br>
+            <span style="font-size:13px">{{ $tanggal }}</span> <br>
         </td>
     </tr>
     </tbody>

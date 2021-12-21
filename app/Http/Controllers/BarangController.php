@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class BarangController extends Controller
 {
+    public function __construct()
+    {
+      $this->m_barang = new Barang();
+    }
+
     public function index(Request $request)
     {
         $data = [];
@@ -238,6 +243,11 @@ class BarangController extends Controller
         return view('lookup.lookup_barang', $data);
     }
 
+    /**
+     * Lookup Barang
+     * Digunakan untuk mengambil / mencari data barang dalam jumlah besar
+     */
+
     public function fetch_lookup_barang(Request $request)
     {
         $limit = $request->get('limit');
@@ -255,5 +265,28 @@ class BarangController extends Controller
 
         $data->appends($request->all());
         return view('lookup.list_data_barang', compact('data'));
+    }
+
+    /**
+     * Stok Barang
+     * Digunakan untuk menampilkan data stok barang
+     */
+
+    public function stok_barang(Request $request)
+    {
+        return view('stok_barang.index');
+    }
+
+    public function list_stok_barang(Request $request)
+    {
+        $limit = $request->get('limit');
+        $sortBy = $request->get('sortby');
+        $sortType = $request->get('sorttype');
+        $q = $request->get('q');
+        $q = str_replace(" ", "%", $q);
+
+        $getList = $this->m_barang->getListStokBarang($q, $sortBy, $sortType);
+        $data = $this->m_barang->arrayPaginator($getList, $request);            
+        return view('stok_barang.list_data', compact('data'));
     }
 }

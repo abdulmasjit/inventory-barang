@@ -162,6 +162,8 @@
             link = "{{ url('report/barang-keluar') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir;
           }else if(jenis_lap=='3'){
             link = "{{ url('report/kartu-stok') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir+"&id_barang="+barang;
+          }else if(jenis_lap=='4'){
+            link = "{{ url('report/mutasi-stok') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir;
           }else{
             link = "";
           }              

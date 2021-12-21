@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>    
-<title>Laporan Barang Masuk</title>	
+<title>Mutasi Stok Barang</title>	
 <link rel="icon" sizes="16x16" href="">
 <style>
     .table {
@@ -54,7 +54,7 @@
     <tbody class="head-lap">
     <tr>
         <td width="100%" class="text-center" style="padding-left:5px;"> 
-            <span style="font-size:13px"><strong>LAPORAN BARANG MASUK</strong></span> <br>
+            <span style="font-size:13px"><strong>MUTASI STOK BARANG</strong></span> <br>
             <span style="font-size:13px">{{ $tanggal }}</span> <br>
         </td>
     </tr>
@@ -65,13 +65,12 @@
 <table class="table">
     <thead class="head-table">
         <tr>
-            <th width="2%" class="text-center">NO.</th>
-            <th width="7%" class="text-center">Tanggal</th>
+            <th width="4%" class="text-center">No.</th>
+            <th width="8%" class="text-center">Tanggal</th>
             <th width="10%" class="text-center">Nomor</th>
-            <th width="20%" class="text-left">Nama Barang</th>
-            <th width="5%" class="text-center">Qty</th>
+            <th width="20%" class="text-center">Nama Barang</th>
+            <th width="20%" class="text-center">Keterangan</th>
             <th width="5%" class="text-center">Satuan</th>
-            <th width="7%" class="text-center">Harga</th>
             <th width="8%" class="text-center">Jumlah</th>
         </tr>
     </thead>
@@ -83,18 +82,16 @@
         @foreach ($data as $row)
           <?php 
             $no++;
-            $subTotal = $row->jumlah*$row->harga; 
-            $total += $subTotal;
+            $total += $row->qty;
           ?>
           <tr>
               <td class="text-center">{{ $no }}.</td>
               <td class="text-center">{{ $row->tanggal }}</td>
-              <td class="text-center">{{ $row->nomor_transaksi }}</td>
+              <td>{{ $row->nomor_transaksi }}</td>
               <td>{{ $row->nama_barang }}</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
+              <td>{{ $row->keterangan }}</td>
               <td class="text-center">{{ $row->satuan }}</td>
-              <td class="text-right">{{ $row->harga }}</td>
-              <td class="text-right">{{ $subTotal }}</td>
+              <td class="text-center">{{ $row->qty }}</td>
           </tr>
         @endforeach
         <tr>
@@ -105,11 +102,10 @@
             <td></td>
             <td></td>
             <td></td>
-            <td></td>
         </tr>
         <tr>
-            <td colspan="6" class="text-right"><strong>Total</strong></td>
-            <td colspan="2" class="text-right">{{ $total }}</td>
+          <td colspan="6" class="text-right"><strong>Total</strong></td>
+          <td class="text-center">{{ $total }}</td>
         </tr>
     </tbody>
 </table>
