@@ -25,6 +25,14 @@ class BarangMasuk extends Model
       return $q;
     }
 
+    function getListDetailBarang($id){
+      $q = DB::table('barang_masuk_detail as bmd')
+          ->select('bmd.*', 'b.kode as kode_barang', 'b.nama as nama_barang')
+          ->leftJoin('barang as b', 'bmd.id_barang', '=', 'b.id_barang')
+          ->where('bmd.id_barang_masuk', $id)->get();
+      return $q;
+    }
+    
     function arrayPaginator($array, $request) {
       $page = (int) $request->get('page', 1);
       $perPage = (int) $request->get('limit');

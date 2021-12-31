@@ -257,7 +257,7 @@ class BarangController extends Controller
         $q = str_replace(" ", "%", $q);
 
         $data = DB::table('barang as b')
-            ->select('b.id_barang', 'b.nama', 'b.kode', 'jb.nama as jenis_barang')
+            ->select('b.id_barang', 'b.nama', 'b.kode', 'jb.nama as jenis_barang', 'b.harga_jual', 'b.harga_beli')
             ->leftJoin('jenis_barang as jb', 'b.id_jenis_barang', '=', 'jb.id')
             ->where(DB::raw("concat(b.id_barang, b.nama, b.kode, jb.nama)"), 'like', '%' . $q . '%')
             ->orderBy($sortBy, $sortType)
