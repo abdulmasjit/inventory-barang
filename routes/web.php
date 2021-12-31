@@ -114,6 +114,8 @@ Route::group(['middleware' => 'auth'], function () {
   
 });
 
+Route::get('/report/pembelian', [ReportController::class, 'report_pembelian']);
+Route::get('/report/penjualan', [ReportController::class, 'report_penjualan']);
 Route::get('/report/barang-masuk', [ReportController::class, 'report_barang_masuk']);
 Route::get('/report/barang-keluar', [ReportController::class, 'report_barang_keluar']);
 Route::get('/report/kartu-stok', [ReportController::class, 'report_kartu_stok']);

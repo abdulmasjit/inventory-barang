@@ -26,8 +26,9 @@ class BarangKeluar extends Model
 
     function getListDetailBarang($id){
       $q = DB::table('barang_keluar_detail as bkd')
-            ->select('bkd.*', 'b.kode as kode_barang', 'b.nama as nama_barang')
+            ->select('bkd.*', 'b.kode as kode_barang', 'b.nama as nama_barang', 's.nama as nama_satuan')
             ->leftJoin('barang as b', 'bkd.id_barang', '=', 'b.id_barang')
+            ->leftJoin('satuan as s', 'b.id_satuan', '=', 's.id')
             ->where('bkd.id_barang_keluar', $id)->get();
       return $q;
     }
@@ -59,8 +60,34 @@ class BarangKeluar extends Model
           LEFT JOIN satuan st ON b.id_satuan = st.id
           WHERE bk.status = '1'
           AND bk.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir'
-          ORDER BY bk.created_at asc
+          ORDER BY bk.tanggal asc
       ");
       return $q;
+    }
+
+    function getReportPenjualan($tanggal_awal, $tanggal_akhir){
+      $q = DB::select("
+          SELECT bk.id, bk.nomor_transaksi, bk.tanggal, bk.id_user, bk.keterangan, bk.status, bk.customer FROM barang_keluar bk
+          WHERE bk.status = '1'
+          AND bk.tanggal BETWEEN '$tanggal_awal' AND '$tanggal_akhir'
+          ORDER BY bk.created_at asc
+      ");
+
+      $data = [];
+      foreach ($q as $row) {
+        $id = $row->id;
+        $details = $this->getListDetailBarang($id);
+        
+        $data [] = array(
+          'id' => $row->id,
+          'nomor_transaksi' => $row->nomor_transaksi,
+          'tanggal'         => $row->tanggal,
+          'customer'        => $row->customer,
+          'keterangan'      => $row->keterangan,
+          'detail'          => $details
+        );
+      }
+
+      return $data;
     }
 }

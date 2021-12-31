@@ -80,6 +80,26 @@ class ReportController extends Controller
         return $pdf->stream();
     }
 
+    public function report_pembelian(Request $request)
+    {   
+        $tanggal_awal = $request->get('tanggal_awal');
+        $tanggal_akhir = $request->get('tanggal_akhir');
+        $data['tanggal'] = $this->format_date($tanggal_awal, 'd/m/Y') . " - " . $this->format_date($tanggal_akhir, 'd/m/Y'); 
+        $data['data'] = $this->m_barang_masuk->getReportPembelian($tanggal_awal, $tanggal_akhir);
+        $pdf = PDF::loadview('report.laporan_pembelian', $data)->setPaper('A4','potrait');
+        return $pdf->stream();
+    }
+
+    public function report_penjualan(Request $request)
+    {   
+        $tanggal_awal = $request->get('tanggal_awal');
+        $tanggal_akhir = $request->get('tanggal_akhir');
+        $data['tanggal'] = $this->format_date($tanggal_awal, 'd/m/Y') . " - " . $this->format_date($tanggal_akhir, 'd/m/Y'); 
+        $data['data'] = $this->m_barang_keluar->getReportPenjualan($tanggal_awal, $tanggal_akhir);
+        $pdf = PDF::loadview('report.laporan_penjualan', $data)->setPaper('A4','potrait');
+        return $pdf->stream();
+    }
+
     function format_date($val, $format){
       $time = strtotime($val);
       $tanggal = date($format, $time);

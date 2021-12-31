@@ -12,13 +12,13 @@
     }
     .head-table th{
       padding: 8px;
-      border: 1px solid #333;
+      border-top: 1px solid #333;
+      border-bottom: 1px solid #333;
       font-family: Arial, Helvetica, sans-serif; 
       font-size:11px;
     }
     .body-table td,th{
-      padding: 3px;
-      border: 1px solid #333;
+      padding: 4px;
       font-family: Arial, Helvetica, sans-serif; 
       font-size:11px;
     }
@@ -66,13 +66,12 @@
     <thead class="head-table">
         <tr>
             <th width="2%" class="text-center">NO.</th>
-            <th width="7%" class="text-center">Tanggal</th>
-            <th width="10%" class="text-center">Nomor</th>
+            <th width="5%" class="text-center">Tanggal</th>
+            <th width="7%" class="text-center">Nomor</th>
+            <th width="7%" class="text-center">Kode</th>
             <th width="20%" class="text-left">Nama Barang</th>
-            <th width="5%" class="text-center">Qty</th>
             <th width="5%" class="text-center">Satuan</th>
-            <th width="7%" class="text-center">Harga</th>
-            <th width="8%" class="text-center">Jumlah</th>
+            <th width="5%" class="text-right">Jumlah</th>
         </tr>
     </thead>
     <tbody class="body-table">
@@ -83,18 +82,16 @@
         @foreach ($data as $row)
           <?php 
             $no++;
-            $subTotal = $row->jumlah*$row->harga; 
-            $total += $subTotal;
+            $total += $row->jumlah;
           ?>
           <tr>
               <td class="text-center">{{ $no }}.</td>
               <td class="text-center">{{ $row->tanggal }}</td>
               <td class="text-center">{{ $row->nomor_transaksi }}</td>
+              <td class="text-center">{{ $row->kode_barang }}</td>
               <td>{{ $row->nama_barang }}</td>
-              <td class="text-center">{{ $row->jumlah }}</td>
               <td class="text-center">{{ $row->satuan }}</td>
-              <td class="text-right">{{ $row->harga }}</td>
-              <td class="text-right">{{ $subTotal }}</td>
+              <td class="text-right">{{ $row->jumlah }}</td>
           </tr>
         @endforeach
         <tr>
@@ -105,11 +102,10 @@
             <td></td>
             <td></td>
             <td></td>
-            <td></td>
         </tr>
         <tr>
-            <td colspan="6" class="text-right"><strong>Total</strong></td>
-            <td colspan="2" class="text-right">{{ $total }}</td>
+            <td colspan="5" class="text-right" style="border-top: 1px solid #333; border-bottom: 1px solid #333;"><strong>Total</strong></td>
+            <td colspan="2" class="text-right" style="border-top: 1px solid #333; border-bottom: 1px solid #333;">{{ $total }}</td>
         </tr>
     </tbody>
 </table>

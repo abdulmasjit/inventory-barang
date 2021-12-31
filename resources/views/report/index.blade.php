@@ -16,10 +16,12 @@
           <label for="nomor_transaksi" class="col-sm-2 col-form-label">Jenis Laporan</label>
           <div class="col-sm-6">
             <select name="jenis_laporan" id="jenis_laporan" onchange="changeReportType()" class="form-control">
-              <option value="1">Laporan Barang Masuk</option>
-              <option value="2">Laporan Barang Keluar</option>
-              <option value="3">Laporan Stok Barang</option>
-              <option value="4">Laporan Mutasi Stok</option>
+              <option value="1">Laporan Pembelian</option>
+              <option value="2">Laporan Penjualan</option>
+              <option value="3">Laporan Barang Masuk</option>
+              <option value="4">Laporan Barang Keluar</option>
+              <option value="5">Laporan Stok Barang</option>
+              <option value="6">Laporan Mutasi Stok</option>
             </select>
           </div>
         </div>
@@ -135,7 +137,7 @@
 
   function changeReportType(){
     const jenis_lap = $('#jenis_laporan').val();
-    if(jenis_lap=='3'){
+    if(jenis_lap=='5'){
       $('#select-barang').show()
     }else{
       $('#select-barang').hide();
@@ -157,12 +159,16 @@
           var rentangTanggal = getDateReport(periode, bulan, tahun);
           // Report
           if(jenis_lap=='1'){
-            link = "{{ url('report/barang-masuk') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir;
+            link = "{{ url('report/pembelian') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir;
           }else if(jenis_lap=='2'){
-            link = "{{ url('report/barang-keluar') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir;
+            link = "{{ url('report/penjualan') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir;
           }else if(jenis_lap=='3'){
-            link = "{{ url('report/kartu-stok') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir+"&id_barang="+barang;
+            link = "{{ url('report/barang-masuk') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir;
           }else if(jenis_lap=='4'){
+            link = "{{ url('report/barang-keluar') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir;
+          }else if(jenis_lap=='5'){
+            link = "{{ url('report/kartu-stok') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir+"&id_barang="+barang;
+          }else if(jenis_lap=='6'){
             link = "{{ url('report/mutasi-stok') }}" + "?tanggal_awal="+ rentangTanggal.tglAwal +"&tanggal_akhir="+ rentangTanggal.tglAkhir;
           }else{
             link = "";
