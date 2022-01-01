@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Models\BarangMasuk;
 use App\Models\BarangMasukDetail;
+use App\Models\BarangHistory;
 use App\Models\MainModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,10 +39,7 @@ class BarangMasukController extends Controller
     {   
         $supplier = DB::table('supplier')->select('id', 'kode', 'nama')->orderBy('nama', 'asc')->get();
         $kode = $this->m_main->getNomorTransaksi('TRM', 'nomor_transaksi', 'barang_masuk');
-        $dataDetail = DB::table('barang_masuk_detail as bmd')
-                          ->select('bmd.*', 'b.kode as kode_barang', 'b.nama as nama_barang')
-                          ->leftJoin('barang as b', 'bmd.id_barang', '=', 'b.id_barang')
-                          ->where('bmd.id_barang_masuk', $id)->get();
+        $dataDetail = $this->m_barang_masuk->getListDetailBarang($id);
 
         $data['supplier'] = $supplier;
         $data['nomor_transaksi'] = $kode;
@@ -70,39 +68,63 @@ class BarangMasukController extends Controller
           // Request Array Detail Barang Masuk
           $barang = $request->barang;
           $qty = $request->qty;
-          $ket = $request->keterangan_barang;
+          $harga = $request->harga;
+          $diskon = $request->diskon;
           // Format Tanggal
           $tanggal = $request->tanggal;
           $time = strtotime($tanggal);
           $tanggal = date('Y-m-d', $time);
+          $total = 0;
 
           if(isset($barang)){
               $id_barang_masuk = Uuid::uuid4()->toString();
+              $jml = count($barang);
+              for ($i=0; $i < $jml; $i++) {
+                // Sum Total 
+                $dis = ($diskon[$i]!="") ? $diskon[$i] : 0;
+                $total += ($qty[$i] * $harga[$i]) - $dis;
+                $dataDetail[] = array(
+                    'id'              => Uuid::uuid4()->toString(),
+                    'id_barang_masuk' => $id_barang_masuk, 
+                    'id_barang'       => $barang[$i],
+                    'jumlah'          => $qty[$i],
+                    'harga'           => $harga[$i],
+                    'diskon'          => $dis,
+                    // 'keterangan'      => null,
+                    'created_at'      => date('Y-m-d H:i:s'),
+                    'updated_at'      => date('Y-m-d H:i:s'),
+                );
+
+                $dataHistory[] = array(
+                  'id'              => Uuid::uuid4()->toString(),
+                  'tanggal'         => date('Y-m-d'), 
+                  'id_barang'       => $barang[$i],
+                  'keterangan'      => 'Barang Masuk',
+                  'qty'             => $qty[$i],
+                  'harga'           => $harga[$i],
+                  'sumber'          => 'TBM', // Pembelian / Barang Masuk
+                  'id_transaksi'    => $id_barang_masuk,
+                  'created_at'      => date('Y-m-d H:i:s'),
+                  'updated_at'      => date('Y-m-d H:i:s'),
+                );
+              }
+
               $BarangMasuk = new BarangMasuk();
               $BarangMasuk->id              = $id_barang_masuk;
               $BarangMasuk->nomor_transaksi = $request->nomor_transaksi; 
               $BarangMasuk->tanggal         = $tanggal;
               $BarangMasuk->id_supplier     = $request->supplier;
               $BarangMasuk->id_user         = Auth::user()->id;
+              $BarangMasuk->total           = $total;
               $BarangMasuk->keterangan      = $request->keterangan;
               $BarangMasuk->status          = '1';
               $BarangMasuk->save();
               
               // Save Detail
               $BarangMasukDetail = new BarangMasukDetail();    
-              $jml = count($barang);
-              for ($i=0; $i < $jml; $i++) { 
-                $dataDetail = array(
-                    'id'              => Uuid::uuid4()->toString(),
-                    'id_barang_masuk' => $id_barang_masuk, 
-                    'id_barang'       => $barang[$i],
-                    'jumlah'          => $qty[$i],
-                    'keterangan'      => $ket[$i],
-                    'created_at'      => date('Y-m-d H:i:s'),
-                    'updated_at'      => date('Y-m-d H:i:s'),
-                );
-                $BarangMasukDetail->insert($dataDetail);
-              }
+              $BarangHistory = new BarangHistory();    
+              $BarangMasukDetail->insert($dataDetail);
+              $BarangHistory->insert($dataHistory);
               
               $response['success'] = true;
               $response['message'] = "Data berhasil disimpan";
@@ -126,37 +148,62 @@ class BarangMasukController extends Controller
         $id = $request->id;
         $barang = $request->barang;
         $qty = $request->qty;
-        $ket = $request->keterangan_barang;
+        $harga = $request->harga;
+        $diskon = $request->diskon;
         // Format Tanggal
         $tanggal = $request->tanggal;
         $time = strtotime($tanggal);
         $tanggal = date('Y-m-d', $time);
+        $total = 0;
 
         if(isset($barang)){
-            BarangMasuk::where('id', $id)->update([
-                'tanggal' => $tanggal,
-                'id_supplier' => $request->supplier,
-                'id_user' => Auth::user()->id,
-                'keterangan' => $request->keterangan,
-            ]);
-
-            // Delete Data
-            BarangMasukDetail::where("id_barang_masuk", $id)->delete();
-            // Save Detail
-            $BarangMasukDetail = new BarangMasukDetail();    
             $jml = count($barang);
-            for ($i=0; $i < $jml; $i++) { 
-              $dataDetail = array(
+            for ($i=0; $i < $jml; $i++) {
+              // Sum Total 
+              $dis = ($diskon[$i]!="") ? $diskon[$i] : 0;
+              $total += ($qty[$i] * $harga[$i]) - $dis;
+              $dataDetail[] = array(
                   'id'              => Uuid::uuid4()->toString(),
                   'id_barang_masuk' => $id, 
                   'id_barang'       => $barang[$i],
                   'jumlah'          => $qty[$i],
-                  'keterangan'      => $ket[$i],
+                  'harga'           => $harga[$i],
+                  'diskon'          => $dis,
+                  // 'keterangan'      => null,
                   'created_at'      => date('Y-m-d H:i:s'),
                   'updated_at'      => date('Y-m-d H:i:s'),
               );
-              $BarangMasukDetail->insert($dataDetail);
+
+              $dataHistory[] = array(
+                'id'              => Uuid::uuid4()->toString(),
+                'tanggal'         => date('Y-m-d'), 
+                'id_barang'       => $barang[$i],
+                'keterangan'      => 'Barang Masuk',
+                'qty'             => $qty[$i],
+                'harga'           => $harga[$i],
+                'sumber'          => 'TBM', // Pembelian / Barang Masuk
+                'id_transaksi'    => $id,
+                'created_at'      => date('Y-m-d H:i:s'),
+                'updated_at'      => date('Y-m-d H:i:s'),
+              );
             }
+
+            BarangMasuk::where('id', $id)->update([
+                'tanggal'     => $tanggal,
+                'id_supplier' => $request->supplier,
+                'id_user'     => Auth::user()->id,
+                'total'       => $total,
+                'keterangan'  => $request->keterangan,
+            ]);
+
+            // Delete Data
+            BarangMasukDetail::where("id_barang_masuk", $id)->delete();
+            BarangHistory::where("id_transaksi", $id)->delete();
+            // Save Detail
+            $BarangMasukDetail = new BarangMasukDetail();
+            $BarangHistory = new BarangHistory();     
+            $BarangMasukDetail->insert($dataDetail);
+            $BarangHistory->insert($dataHistory);
             
             $response['success'] = true;
             $response['message'] = "Data berhasil diubah";
