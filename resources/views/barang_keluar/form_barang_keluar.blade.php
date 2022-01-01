@@ -122,7 +122,6 @@
 
   function selectRow(payload){
     addRows(payload)
-    console.log("data barang", payload)
   }
 
   $('#btn-add').on('click', function() {
@@ -143,16 +142,19 @@
     let table = document.getElementById("dataTableTransaksi");
     let count = table.rows.length;
     let result = false;
-    // for (let i = 0; i < count; i++) {
-    //   if(i!=0){
-    //     const el = table.rows[i].cells[0];
-    //     let input = el.getElementsByTagName('input')[0].value;
-    //     if(input==val){
-    //       result = true;
-    //       break;
-    //     }
-    //   }
-    // }
+    for (let i = 0; i < count; i++) {
+      if(i!=0){
+        const el = table.rows[i].cells[0];
+        let cekInput = el.getElementsByTagName('input');
+        if(cekInput.length>0){
+          let input = cekInput[0].value;
+          if(input==val){
+            result = true;
+            break;
+          }
+        }
+      }
+    }
     return result;
   }
 

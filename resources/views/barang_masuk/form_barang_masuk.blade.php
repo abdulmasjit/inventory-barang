@@ -153,16 +153,19 @@
     let table = document.getElementById("dataTableTransaksi");
     let count = table.rows.length;
     let result = false;
-    // for (let i = 0; i < count; i++) {
-    //   if(i!=0){
-    //     const el = table.rows[i].cells[0];
-    //     let input = el.getElementsByTagName('input')[0].value;
-    //     if(input==val){
-    //       result = true;
-    //       break;
-    //     }
-    //   }
-    // }
+    for (let i = 0; i < count; i++) {
+      if(i!=0){
+        const el = table.rows[i].cells[0];
+        let cekInput = el.getElementsByTagName('input');
+        if(cekInput.length>0){
+          let input = cekInput[0].value;
+          if(input==val){
+            result = true;
+            break;
+          }
+        }
+      }
+    }
     return result;
   }
 
@@ -173,7 +176,7 @@
     }else{
       let jumlah = parseInt($("#jumlah-row").val()) + 1;
       let data = "<tr>"
-        + "<td><input type='hidden' name='barang[]' class='form-control form-control-sm' value='" + val.id_barang + "'>" + "<b>[" + val.kode + "]</b> " + val.nama + "</td>"
+        + "<td><input type='hidden' name='barang[]' class='form-control form-control-sm barang_hidden' value='" + val.id_barang + "'>" + "<b>[" + val.kode + "]</b> " + val.nama + "</td>"
         + "<td><input type='number' name='qty[]' class='form-control form-control-sm qty' placeholder='0' required></td>"
         + "<td><input type='number' name='harga[]' class='form-control form-control-sm harga' placeholder='0' required></td>"
         + "<td><input type='number' name='diskon[]' class='form-control form-control-sm diskon' placeholder='0'></td>"
