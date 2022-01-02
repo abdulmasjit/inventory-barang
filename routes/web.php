@@ -11,7 +11,7 @@ use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\MutasiStokController;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -112,6 +112,19 @@ Route::group(['middleware' => 'auth'], function () {
   // Report
   Route::get('/laporan', [ReportController::class, 'index']);
   
+  //Group Setting
+  Route::group(['prefix' => '/setting'], function () {
+    Route::get('user', [UserController::class, 'index'])->name('user');
+    Route::get('user-add', [UserController::class, 'create'])->name('user.create');
+    Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+  });
+   //Master User
+   Route::group(['prefix' => '/user'], function () {
+    Route::post('/add', [UserController::class, 'add'])->name('user.add');
+    Route::post('/update', [UserController::class, 'update'])->name('user.update');
+    Route::get('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+    Route::get('/fetch-data', [UserController::class, 'fetch_data']);
+  });
 });
 
 Route::get('/report/pembelian', [ReportController::class, 'report_pembelian']);
