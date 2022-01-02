@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 07 Des 2021 pada 22.05
+-- Waktu pembuatan: 01 Jan 2022 pada 07.29
 -- Versi server: 10.5.9-MariaDB-log
 -- Versi PHP: 7.4.15
 
@@ -73,6 +73,7 @@ CREATE TABLE `barang` (
   `harga_beli` int(11) DEFAULT NULL,
   `harga_jual` int(11) DEFAULT NULL,
   `stok` int(11) DEFAULT NULL,
+  `stok_minimum` int(11) DEFAULT NULL,
   `foto` varchar(100) DEFAULT NULL,
   `status` varchar(2) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -83,10 +84,50 @@ CREATE TABLE `barang` (
 -- Dumping data untuk tabel `barang`
 --
 
-INSERT INTO `barang` (`id_barang`, `kode`, `nama`, `deskripsi`, `id_jenis_barang`, `id_satuan`, `harga_beli`, `harga_jual`, `stok`, `foto`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'BRG00001', 'Mouse Robot', 'Mouse Robot + Bluetooth', 1, 1, 50000, 65000, 100, NULL, '1', '2021-11-09 06:54:58', '2021-11-13 05:54:39'),
-(2, 'BRG00002', 'Keyboard Thinkpad', 'Keyboard Thinkpad Backlight', 2, 1, 100000, 150000, 300, NULL, '1', '2021-11-13 06:16:56', '2021-11-13 06:16:56'),
-(3, 'BRG00003', 'Laptop Lenovo Thinkpad T440 Ram 8', 'Ram 8, SSD 128, hardisk 500 GB', 17, 8, 3800000, 4200000, 40, NULL, '1', '2021-12-07 14:53:29', '2021-12-07 14:53:29');
+INSERT INTO `barang` (`id_barang`, `kode`, `nama`, `deskripsi`, `id_jenis_barang`, `id_satuan`, `harga_beli`, `harga_jual`, `stok`, `stok_minimum`, `foto`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'BRG00001', 'Mouse Robot', 'Mouse Robot + Bluetooth', 1, 1, 50000, 65000, 100, NULL, NULL, '1', '2021-11-09 06:54:58', '2021-11-13 05:54:39'),
+(2, 'BRG00002', 'Keyboard Thinkpad', 'Keyboard Thinkpad Backlight', 2, 1, 100000, 150000, 300, NULL, NULL, '1', '2021-11-13 06:16:56', '2021-11-13 06:16:56'),
+(3, 'BRG00003', 'Laptop Lenovo Thinkpad T440 Ram 8', 'Ram 8, SSD 128, hardisk 500 GB', 17, 8, 3800000, 4200000, 40, NULL, NULL, '1', '2021-12-07 14:53:29', '2021-12-07 14:53:29');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `barang_history`
+--
+
+CREATE TABLE `barang_history` (
+  `id` varchar(50) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `id_barang` int(11) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `harga` double DEFAULT NULL,
+  `hpp` double DEFAULT NULL,
+  `sumber` varchar(20) DEFAULT NULL,
+  `id_transaksi` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Sumber : \r\n1. TBM = Transaksi Barang Masuk\r\n2. TBK = Transaksi Barang Keluar\r\n3. MS = Mutasi Stok\r\n4. MBH = Mutasi Barang Hilang\r\n5. MBR = Mutasi Barang Rusak\r\n\r\n';
+
+--
+-- Dumping data untuk tabel `barang_history`
+--
+
+INSERT INTO `barang_history` (`id`, `tanggal`, `id_barang`, `keterangan`, `qty`, `harga`, `hpp`, `sumber`, `id_transaksi`, `created_at`, `updated_at`) VALUES
+('d5c2e85d-7e6b-4e80-92b7-d2088b0d872a', '2021-12-19', 1, 'Barang Masuk', 100, NULL, NULL, 'TBM', 'fd49187f-1c1f-4d36-b61d-4e6aefb6bc18', '2021-12-19 12:53:46', '2021-12-19 12:53:46'),
+('e8ed69a1-b6a4-4df2-93e7-eb33e3f052ee', '2021-12-19', 3, 'Barang Masuk', 10, NULL, NULL, 'TBM', 'fd49187f-1c1f-4d36-b61d-4e6aefb6bc18', '2021-12-19 12:53:46', '2021-12-19 12:53:46'),
+('55bf278c-e932-4c81-be91-944dc265c1c3', '2021-12-19', 2, 'Barang Masuk', 20, NULL, NULL, 'TBM', 'fd49187f-1c1f-4d36-b61d-4e6aefb6bc18', '2021-12-19 12:53:46', '2021-12-19 12:53:46'),
+('0e05b8ad-3870-4123-830b-98641e9ccafe', '2021-12-19', 1, 'Barang Keluar', -1, NULL, NULL, 'TBK', '9e432c20-945f-4ddc-83c8-30f3bec59bd0', '2021-12-19 12:55:01', '2021-12-19 12:55:01'),
+('ce2f7e4b-e2d3-44dc-9f22-e23a5847c2af', '2021-12-19', 3, 'Barang Keluar', -1, NULL, NULL, 'TBK', '9e432c20-945f-4ddc-83c8-30f3bec59bd0', '2021-12-19 12:55:01', '2021-12-19 12:55:01'),
+('2ffaa57a-f8f9-4191-9330-858876112aa9', '2021-12-01', 3, 'Barang Masuk', 5, NULL, NULL, 'TBM', '3568f34b-f550-49c3-987f-2073c5da53e2', '2021-12-19 13:23:32', '2021-12-19 13:23:32'),
+('84be4d1d-d8da-4b01-9c4f-e41bf5b14680', '2021-12-20', 1, 'Barang Rusak Terjatuh', -4, NULL, NULL, 'MBR', 'e62e7a9a-9217-4440-ac29-9831ebf352db', '2021-12-20 13:57:01', '2021-12-20 14:44:50'),
+('203b35f0-f2cb-43a1-a4c9-bb4f9783ffbc', '2021-12-20', 2, 'Barang Hilang', -1, NULL, NULL, 'MBH', '9c783e92-e0cc-413c-9409-d9d813a4ffce', '2021-12-20 14:45:18', '2021-12-20 14:45:18'),
+('3ad979a5-5aa2-420a-a0b0-3f83065af86d', '2021-12-20', 3, 'Input Barang Stok Lama Dari Gudang Bulan November 2021', 1, NULL, NULL, 'MS', 'c375fdba-0da5-4960-a7b6-ed90e0eef817', '2021-12-20 14:50:18', '2021-12-20 14:55:52'),
+('e38e102a-d003-4d16-99f6-a33cf65fe1fe', '2021-12-31', 1, 'Barang Masuk', 2, 50000, NULL, 'TBM', '08380889-ca73-42d3-8021-37f95c848c61', '2021-12-31 07:31:59', '2021-12-31 07:31:59'),
+('f1f686ac-08db-4637-bcb9-11f358bedad9', '2021-12-31', 2, 'Barang Masuk', 2, 120000, NULL, 'TBM', '08380889-ca73-42d3-8021-37f95c848c61', '2021-12-31 07:31:59', '2021-12-31 07:31:59'),
+('0cb64a64-5778-40ed-becf-a0b7a3595176', '2021-12-31', 2, 'Barang Keluar', -2, 150000, NULL, 'TBK', 'd3967f6d-7b56-4936-bffb-f1637ad3074b', '2021-12-31 08:52:24', '2021-12-31 08:52:24'),
+('c8de6b58-54b5-48ca-a35c-3936efc75952', '2021-12-31', 3, 'Barang Keluar', -1, 4200000, NULL, 'TBK', 'd3967f6d-7b56-4936-bffb-f1637ad3074b', '2021-12-31 08:52:24', '2021-12-31 08:52:24'),
+('34354abd-af1d-46ed-8a13-512c0e29dc84', '2021-12-31', 3, 'Barang Keluar', -2, 4200000, NULL, 'TBK', 'b7e6d824-7faa-4f53-aa86-50dbde26014e', '2021-12-31 10:03:54', '2021-12-31 10:03:54');
 
 -- --------------------------------------------------------
 
@@ -98,6 +139,8 @@ CREATE TABLE `barang_keluar` (
   `id` varchar(50) NOT NULL,
   `nomor_transaksi` varchar(20) NOT NULL,
   `tanggal` date DEFAULT NULL,
+  `customer` varchar(100) DEFAULT NULL,
+  `total` double DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `status` varchar(2) DEFAULT NULL,
@@ -110,10 +153,10 @@ CREATE TABLE `barang_keluar` (
 -- Dumping data untuk tabel `barang_keluar`
 --
 
-INSERT INTO `barang_keluar` (`id`, `nomor_transaksi`, `tanggal`, `id_user`, `keterangan`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-('374ccb10-7ba3-44cf-9b54-3bcef7b41166', 'TRK20211207003', '2021-12-07', 1, 'Kirim Ke Surabaya', '1', '2021-12-07 15:36:08', '2021-12-07 15:36:58', NULL),
-('72731573-ccc8-4f64-8f9a-ef2e7448336a', 'TRK20211207001', '2021-12-07', 1, 'Kirim Ke Semarang', '1', '2021-12-07 14:15:25', '2021-12-07 15:28:57', '2021-12-07 15:28:57'),
-('b50563c1-91f3-4367-8adb-e08324b6fbd8', 'TRK20211207002', '2021-12-07', 1, 'Kirim Ke Magetan', '1', '2021-12-07 15:13:55', '2021-12-07 15:14:37', NULL);
+INSERT INTO `barang_keluar` (`id`, `nomor_transaksi`, `tanggal`, `customer`, `total`, `id_user`, `keterangan`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('9e432c20-945f-4ddc-83c8-30f3bec59bd0', 'TRK20211219001', '2021-12-19', NULL, 0, 1, 'Save 1', '1', '2021-12-19 12:55:01', '2021-12-19 12:55:01', NULL),
+('b7e6d824-7faa-4f53-aa86-50dbde26014e', 'TRK20211219002', '2021-12-19', 'Bambang Tri', 8400000, 1, 'Pengadaaan HPL 123', '1', '2021-12-19 16:02:13', '2021-12-31 10:03:54', NULL),
+('d3967f6d-7b56-4936-bffb-f1637ad3074b', 'TRK20211231001', '2021-12-31', 'Adira Sahara UPDATE', 4490000, 1, 'UPDATE', '1', '2021-12-31 08:34:30', '2021-12-31 08:52:24', NULL);
 
 -- --------------------------------------------------------
 
@@ -126,6 +169,8 @@ CREATE TABLE `barang_keluar_detail` (
   `id_barang_keluar` varchar(50) DEFAULT NULL,
   `id_barang` int(11) DEFAULT NULL,
   `jumlah` int(11) DEFAULT NULL,
+  `harga` double DEFAULT NULL,
+  `diskon` double DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -135,13 +180,12 @@ CREATE TABLE `barang_keluar_detail` (
 -- Dumping data untuk tabel `barang_keluar_detail`
 --
 
-INSERT INTO `barang_keluar_detail` (`id`, `id_barang_keluar`, `id_barang`, `jumlah`, `keterangan`, `created_at`, `updated_at`) VALUES
-('1b0e1d41-ece8-40f4-b4b1-408169348a89', 'b50563c1-91f3-4367-8adb-e08324b6fbd8', 2, 80, 'Barang 1', '2021-12-07 15:14:37', '2021-12-07 15:14:37'),
-('2196097e-4dd9-49d2-9097-bc22a54be381', 'b50563c1-91f3-4367-8adb-e08324b6fbd8', 1, 101, 'Barang 2', '2021-12-07 15:14:37', '2021-12-07 15:14:37'),
-('6e2e5eb5-dde4-4552-ab5f-8f05d8d4fd7e', '72731573-ccc8-4f64-8f9a-ef2e7448336a', 1, 101, '', '2021-12-07 14:19:39', '2021-12-07 14:19:39'),
-('d90294e0-541b-4a2d-b3e9-370a26f436d0', '374ccb10-7ba3-44cf-9b54-3bcef7b41166', 1, 10, 'Barang 1', '2021-12-07 15:36:58', '2021-12-07 15:36:58'),
-('d947339b-5e90-4ace-8eb7-b36c324bb090', '374ccb10-7ba3-44cf-9b54-3bcef7b41166', 2, 10, 'Barang 2', '2021-12-07 15:36:58', '2021-12-07 15:36:58'),
-('fd5ad6f1-1a12-4ed7-a00f-c4d9de3453cd', '72731573-ccc8-4f64-8f9a-ef2e7448336a', 2, 201, '', '2021-12-07 14:19:39', '2021-12-07 14:19:39');
+INSERT INTO `barang_keluar_detail` (`id`, `id_barang_keluar`, `id_barang`, `jumlah`, `harga`, `diskon`, `keterangan`, `created_at`, `updated_at`) VALUES
+('3ad39b30-cd8a-434d-9c14-ccbec02ce52e', '9e432c20-945f-4ddc-83c8-30f3bec59bd0', 3, 1, NULL, NULL, NULL, '2021-12-19 12:55:01', '2021-12-19 12:55:01'),
+('50b35631-e8b4-4b93-9e9c-464d9d358fac', 'd3967f6d-7b56-4936-bffb-f1637ad3074b', 3, 1, 4200000, 0, NULL, '2021-12-31 08:52:24', '2021-12-31 08:52:24'),
+('5be2d72c-f569-4e0f-b090-5a2a92475fb6', '9e432c20-945f-4ddc-83c8-30f3bec59bd0', 1, 1, NULL, NULL, NULL, '2021-12-19 12:55:01', '2021-12-19 12:55:01'),
+('620bab69-4bb9-4783-8c89-d575fb865549', 'd3967f6d-7b56-4936-bffb-f1637ad3074b', 2, 2, 150000, 10000, NULL, '2021-12-31 08:52:24', '2021-12-31 08:52:24'),
+('8f8b0052-ed24-4bb3-adaa-7418c244e40e', 'b7e6d824-7faa-4f53-aa86-50dbde26014e', 3, 2, 4200000, 0, NULL, '2021-12-31 10:03:54', '2021-12-31 10:03:54');
 
 -- --------------------------------------------------------
 
@@ -155,6 +199,7 @@ CREATE TABLE `barang_masuk` (
   `tanggal` date DEFAULT NULL,
   `id_supplier` int(11) DEFAULT NULL,
   `id_user` int(11) DEFAULT NULL,
+  `total` double DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `status` varchar(2) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -166,9 +211,10 @@ CREATE TABLE `barang_masuk` (
 -- Dumping data untuk tabel `barang_masuk`
 --
 
-INSERT INTO `barang_masuk` (`id`, `nomor_transaksi`, `tanggal`, `id_supplier`, `id_user`, `keterangan`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-('3a7e955b-b2f7-419a-9388-d0023ea99a14', 'TRM20211207002', '2021-12-07', 2, 1, 'Pengadaan Barang 2', '1', '2021-12-07 15:32:42', '2021-12-07 15:34:42', NULL),
-('8dc645e1-1b38-4de1-af85-934ea9a3ed43', 'TRM20211207001', '2021-12-07', 1, 1, 'Pengadaaan Barang', '1', '2021-12-07 15:13:08', '2021-12-07 15:29:59', '2021-12-07 15:29:59');
+INSERT INTO `barang_masuk` (`id`, `nomor_transaksi`, `tanggal`, `id_supplier`, `id_user`, `total`, `keterangan`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('08380889-ca73-42d3-8021-37f95c848c61', 'TRM20211231001', '2021-12-31', 2, 1, 320000, 'Coba Harga UPDATE', '1', '2021-12-31 06:55:13', '2021-12-31 07:31:59', NULL),
+('3568f34b-f550-49c3-987f-2073c5da53e2', 'TRM20211219002', '2021-12-01', 3, 1, NULL, NULL, '1', '2021-12-19 13:23:32', '2021-12-19 13:23:32', NULL),
+('fd49187f-1c1f-4d36-b61d-4e6aefb6bc18', 'TRM20211219001', '2021-12-19', 2, 1, NULL, 'Pengadaaan HPL 1', '1', '2021-12-19 12:53:46', '2021-12-19 12:53:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -181,6 +227,8 @@ CREATE TABLE `barang_masuk_detail` (
   `id_barang_masuk` varchar(50) DEFAULT NULL,
   `id_barang` int(11) DEFAULT NULL,
   `jumlah` int(11) DEFAULT NULL,
+  `harga` double DEFAULT NULL,
+  `diskon` double DEFAULT NULL,
   `keterangan` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -190,11 +238,31 @@ CREATE TABLE `barang_masuk_detail` (
 -- Dumping data untuk tabel `barang_masuk_detail`
 --
 
-INSERT INTO `barang_masuk_detail` (`id`, `id_barang_masuk`, `id_barang`, `jumlah`, `keterangan`, `created_at`, `updated_at`) VALUES
-('00904272-1447-4bce-8c44-016f54598cf9', '8dc645e1-1b38-4de1-af85-934ea9a3ed43', 2, 10, NULL, '2021-12-07 15:13:08', '2021-12-07 15:13:08'),
-('277ac07f-991d-41eb-ab6e-87099cf1ced0', '3a7e955b-b2f7-419a-9388-d0023ea99a14', 2, 80, 'Keyboard', '2021-12-07 15:34:42', '2021-12-07 15:34:42'),
-('de702086-284a-45f4-baf6-dcb4d1d0cab3', '8dc645e1-1b38-4de1-af85-934ea9a3ed43', 1, 20, NULL, '2021-12-07 15:13:08', '2021-12-07 15:13:08'),
-('f426b6b0-6eb5-4f52-a473-2934458f3ab4', '3a7e955b-b2f7-419a-9388-d0023ea99a14', 1, 10, 'Mouse', '2021-12-07 15:34:42', '2021-12-07 15:34:42');
+INSERT INTO `barang_masuk_detail` (`id`, `id_barang_masuk`, `id_barang`, `jumlah`, `harga`, `diskon`, `keterangan`, `created_at`, `updated_at`) VALUES
+('6380e9a1-bc4d-4611-80ae-8146e9e979a3', 'fd49187f-1c1f-4d36-b61d-4e6aefb6bc18', 3, 10, NULL, 0, NULL, '2021-12-19 12:53:46', '2021-12-19 12:53:46'),
+('6cd4f35d-99c1-49a7-a634-bfe365f750dc', '08380889-ca73-42d3-8021-37f95c848c61', 2, 2, 120000, 20000, NULL, '2021-12-31 07:31:59', '2021-12-31 07:31:59'),
+('92917df7-64dd-453b-99f9-65ed5fabc25f', '3568f34b-f550-49c3-987f-2073c5da53e2', 3, 5, NULL, 0, NULL, '2021-12-19 13:23:32', '2021-12-19 13:23:32'),
+('c567c626-b1c3-4b4b-a9f9-6beee4e25b80', 'fd49187f-1c1f-4d36-b61d-4e6aefb6bc18', 2, 20, NULL, 0, NULL, '2021-12-19 12:53:46', '2021-12-19 12:53:46'),
+('dde81d32-c972-4528-83c6-29cad6a5d701', 'fd49187f-1c1f-4d36-b61d-4e6aefb6bc18', 1, 100, NULL, 0, NULL, '2021-12-19 12:53:46', '2021-12-19 12:53:46'),
+('f1ed3975-f6f3-4f35-8082-cb77296af1e8', '08380889-ca73-42d3-8021-37f95c848c61', 1, 2, 50000, 0, NULL, '2021-12-31 07:31:59', '2021-12-31 07:31:59');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `customer`
+--
+
+CREATE TABLE `customer` (
+  `id` int(11) DEFAULT NULL,
+  `kode` varchar(10) DEFAULT NULL,
+  `nama` varchar(100) DEFAULT NULL,
+  `no_telp` varchar(15) DEFAULT NULL,
+  `alamat` text DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `status` varchar(2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -248,15 +316,19 @@ CREATE TABLE `menu` (
 INSERT INTO `menu` (`id_menu`, `nama_menu`, `link_menu`, `class_icon`, `is_parent`, `id_parent`, `keterangan`) VALUES
 (1, 'Dashboard', '/home', 'fa fa-home', '1', NULL, 'Menu Dashboard'),
 (2, 'Master Data', '#', 'fa fa-home', '1', NULL, 'Menu Master Data'),
-(3, 'Barang', '/master/barang', 'fa fa-home', '2', NULL, 'Menu Master Barang'),
+(3, 'Barang', '/master/barangs', 'fa fa-home', '2', NULL, 'Menu Master Barang'),
 (4, 'Jenis Barang', '/master/jenis-barang', 'fa fa-home', '2', NULL, 'Menu Master Jenis Barang'),
 (5, 'Satuan', '/master/satuan', 'fa fa-home', '2', NULL, 'Menu Master Satuan'),
 (6, 'Supplier', '/master/supplier', 'fa fa-home', '2', NULL, 'Menu Master Supplier'),
 (7, 'Transaksi', '#', 'fa fa-home', '1', NULL, 'Menu Transaksi'),
-(8, 'Barang Masuk', '/barang-masuk', 'fa fa-home', '2', NULL, 'Menu Transaksi Barang Masuk'),
-(9, 'Barang Keluar', '/barang-keluar', 'fa fa-home', '2', NULL, 'Menu Transaksi Barang Keluar'),
+(8, 'Pembelian', '/barang-masuk', 'fa fa-home', '2', NULL, 'Menu Transaksi Barang Masuk'),
+(9, 'Penjualan', '/barang-keluar', 'fa fa-home', '2', NULL, 'Menu Transaksi Barang Keluar'),
 (10, 'Setting', '#', 'fa fa-wrench', '1', NULL, 'Menu Setting'),
-(11, 'User', '/setting/user', 'fa fa-home', '2', NULL, 'Menu Setting User');
+(11, 'User', '/setting/user', 'fa fa-home', '2', NULL, 'Menu Setting User'),
+(12, 'Mutasi Stok', '/mutasi-stok', 'fa fa-home', '2', NULL, 'Menu Mutasi Stok'),
+(13, 'Laporan', '/laporan', 'fa fa-copy', '1', NULL, 'Menu Laporan'),
+(14, 'Data Barang', '#', 'fa fa-copy', '1', NULL, 'Menu Data Barang'),
+(15, 'Stok Barang', '/barang/stok', 'fa fa-home', '2', NULL, 'Menu Stok Barang');
 
 -- --------------------------------------------------------
 
@@ -287,11 +359,15 @@ INSERT INTO `menu_user` (`id_menu_user`, `id_menu`, `id_role`, `id_posisi`, `uru
 (4, 4, 'HA01', '1', 2, 2, 2, '2021-10-16 13:09:15', '2021-10-16 13:07:19'),
 (5, 5, 'HA01', '1', 3, 2, 2, '2021-10-16 13:09:16', '2021-10-16 13:07:22'),
 (6, 6, 'HA01', '1', 4, 2, 2, '2021-10-16 13:09:17', '2021-10-16 13:07:26'),
-(7, 7, 'HA01', '1', 3, NULL, 1, '2021-11-15 14:23:20', '2021-11-15 14:22:53'),
+(7, 7, 'HA01', '1', 4, NULL, 1, '2021-12-21 12:45:44', '2021-11-15 14:22:53'),
 (8, 8, 'HA01', '1', 1, 7, 2, '2021-11-15 14:24:41', '2021-11-15 14:23:26'),
 (9, 9, 'HA01', '1', 2, 7, 2, '2021-11-15 14:24:42', '2021-11-15 14:23:49'),
-(10, 10, 'HA01', '1', 4, NULL, 1, '2021-11-15 14:24:23', '2021-11-15 14:24:11'),
-(11, 11, 'HA01', '1', 1, 10, 2, '2021-11-15 14:24:47', '2021-11-15 14:24:27');
+(10, 10, 'HA01', '1', 6, NULL, 1, '2021-12-21 12:46:34', '2021-11-15 14:24:11'),
+(11, 11, 'HA01', '1', 1, 10, 2, '2021-11-15 14:24:47', '2021-11-15 14:24:27'),
+(12, 12, 'HA01', '1', 3, 14, 2, '2021-12-21 12:44:23', '2021-12-12 07:52:12'),
+(13, 13, 'HA01', '1', 5, NULL, 1, '2021-12-21 12:46:32', '2021-12-12 12:56:03'),
+(14, 14, 'HA01', '1', 3, NULL, 1, '2021-12-21 12:43:33', '2021-12-21 12:42:53'),
+(15, 15, 'HA01', '1', 1, 14, 2, '2021-12-21 12:43:55', '2021-12-21 12:43:39');
 
 -- --------------------------------------------------------
 
@@ -314,6 +390,35 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `mutasi_stok`
+--
+
+CREATE TABLE `mutasi_stok` (
+  `id` varchar(50) DEFAULT NULL,
+  `nomor_transaksi` varchar(20) DEFAULT NULL,
+  `tanggal` date DEFAULT NULL,
+  `id_barang` int(11) DEFAULT NULL,
+  `keterangan` text DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `jenis` varchar(20) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL,
+  `status` varchar(2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='jenis : \r\n1. MUTASI\r\n2. RUSAK / CACAT\r\n3. HILANG';
+
+--
+-- Dumping data untuk tabel `mutasi_stok`
+--
+
+INSERT INTO `mutasi_stok` (`id`, `nomor_transaksi`, `tanggal`, `id_barang`, `keterangan`, `qty`, `jenis`, `id_user`, `status`, `created_at`, `updated_at`) VALUES
+('e62e7a9a-9217-4440-ac29-9831ebf352db', 'MUT20211220001', '2021-12-20', 1, 'Barang Rusak Terjatuh', 4, '2', 1, '1', '2021-12-20 13:57:01', '2021-12-20 14:44:50'),
+('9c783e92-e0cc-413c-9409-d9d813a4ffce', 'MUT20211220002', '2021-12-20', 2, 'Barang Hilang', 1, '3', 1, '1', '2021-12-20 14:45:18', '2021-12-20 14:45:18'),
+('c375fdba-0da5-4960-a7b6-ed90e0eef817', 'MUT20211220003', '2021-12-20', 3, 'Input Barang Stok Lama Dari Gudang Bulan November 2021', 1, '1', 1, '1', '2021-12-20 14:50:18', '2021-12-20 14:55:52');
 
 -- --------------------------------------------------------
 
@@ -532,13 +637,13 @@ ALTER TABLE `jenis_barang`
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `menu_user`
 --
 ALTER TABLE `menu_user`
-  MODIFY `id_menu_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_menu_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `migrations`

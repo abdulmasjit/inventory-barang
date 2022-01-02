@@ -27,5 +27,13 @@ class AppServiceProvider extends ServiceProvider
     {
         // Paginator::useBootstrap();
         Paginator::defaultView('layouts.pagination');
+        // Currency
+        Blade::directive('format_rupiah', function ( $expression ) {
+           if($expression!=null){
+             return "<?php echo number_format($expression,0,',','.'); ?>"; 
+            }else{
+             return "<?php echo 0 ?>"; 
+           }
+        });
     }
 }
