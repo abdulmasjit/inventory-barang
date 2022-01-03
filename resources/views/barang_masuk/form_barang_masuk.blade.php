@@ -178,7 +178,7 @@
       let data = "<tr>"
         + "<td><input type='hidden' name='barang[]' class='form-control form-control-sm barang_hidden' value='" + val.id_barang + "'>" + "<b>[" + val.kode + "]</b> " + val.nama + "</td>"
         + "<td><input type='number' name='qty[]' class='form-control form-control-sm qty' placeholder='0' required></td>"
-        + "<td><input type='number' name='harga[]' class='form-control form-control-sm harga' placeholder='0' required></td>"
+        + "<td><input type='number' name='harga[]' class='form-control form-control-sm harga' value='" + val.harga_beli + "' placeholder='0' required></td>"
         + "<td><input type='number' name='diskon[]' class='form-control form-control-sm diskon' placeholder='0'></td>"
         + "<td class='text-right'><input type='hidden' class='form-control form-control-sm sub_total_hidden'> <span class='sub_total'></span></td>"
         + "<td class='text-center'><a href='javascript:;' onclick='deleteRow(this)' class='btn btn-sm btn-danger'><i class='fa fa-times-circle'></i></a></td>"
