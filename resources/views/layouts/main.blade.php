@@ -7,16 +7,16 @@
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>Skydash Admin</title>
   <!-- plugins:css -->
-  <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
-  <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/custom.style.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/sort-table/sort-table.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/sweetalert2/sweetalert2.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/datepicker/bootstrap-datepicker3.min.css') }}">
+  <link rel="shortcut icon" href="{{ secure_asset('assets/images/favicon.png') }}" />
+  <link rel="stylesheet" href="{{ secure_asset('assets/css/vertical-layout-light/style.css') }}">
+  <link rel="stylesheet" href="{{ secure_asset('assets/css/vertical-layout-light/custom.style.css') }}">
+  <link rel="stylesheet" href="{{ secure_asset('assets/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ secure_asset('assets/vendors/feather/feather.css') }}">
+  <link rel="stylesheet" href="{{ secure_asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
+  <link rel="stylesheet" href="{{ secure_asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ secure_asset('assets/all/sort-table/sort-table.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ secure_asset('assets/all/sweetalert2/sweetalert2.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ secure_asset('assets/all/datepicker/bootstrap-datepicker3.min.css') }}">
 
   @yield('css')
 </head>
@@ -37,14 +37,14 @@
     </div>
   </div>
   <!-- plugins:js -->
-  <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
-  <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
-  <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
-  <script src="{{ asset('assets/js/template.js') }}"></script>
-  <script src="{{ asset('assets/js/dashboard.js') }}"></script>
-  <script src="{{ asset('assets/all/sort-table/sort-table.js') }}"></script>
-  <script src="{{ asset('assets/all/sweetalert2/sweetalert2.all.min.js') }}"></script>
-  <script src="{{ asset('assets/all/datepicker/bootstrap-datepicker.min.js') }}"></script>
+  <script src="{{ secure_asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
+  <script src="{{ secure_asset('assets/js/off-canvas.js') }}"></script>
+  <script src="{{ secure_asset('assets/js/hoverable-collapse.js') }}"></script>
+  <script src="{{ secure_asset('assets/js/template.js') }}"></script>
+  <script src="{{ secure_asset('assets/js/dashboard.js') }}"></script>
+  <script src="{{ secure_asset('assets/all/sort-table/sort-table.js') }}"></script>
+  <script src="{{ secure_asset('assets/all/sweetalert2/sweetalert2.all.min.js') }}"></script>
+  <script src="{{ secure_asset('assets/all/datepicker/bootstrap-datepicker.min.js') }}"></script>
   <script>
     $(document).ready(function() {
       $.ajaxSetup({
