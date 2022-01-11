@@ -27,8 +27,8 @@ class JenisBarangController extends Controller
         $data = DB::table('jenis_barang')
                     ->where('nama', 'like', '%'.$q.'%')
                     ->orderBy($sortBy, $sortType)
-                    ->paginate($limit);
-                    
+                    ->paginate($limit);            
+
         $data->appends($request->all());
         return view('jenis_barang.list_data', compact('data'));
     }
