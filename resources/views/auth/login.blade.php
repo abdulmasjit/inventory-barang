@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Inventory Barang</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
@@ -30,7 +30,6 @@
               <h5>LOGIN</h5>
               <p class="font-weight-light mb-0">Gunakan username / email dan password Anda untuk masuk ke dalam sistem!</p>
               <form class="pt-3" action="{{ url('auth/login') }}" method="POST">
-                @csrf
                 <div class="form-group">
                   <input type="text" class="form-control form-control-lg" name="username" id="username" placeholder="Username">
                 </div>
@@ -41,12 +40,6 @@
                   <button type="submit" class="btn btn-block btn-primary font-weight-medium">Login</button>
                 </div>
                 <div class="my-2 d-flex justify-content-between align-items-center">
-                  {{-- <div class="form-check">
-                    <label class="form-check-label text-muted">
-                      <input type="checkbox" class="form-check-input">
-                      Keep me signed in
-                    </label>
-                  </div> --}}
                   <a href="javascript:;" class="auth-link text-black">Lupa password?</a>
                 </div>
                 <div class="text-center mt-4 font-weight-light" style="font-size:15px;">
@@ -70,7 +63,5 @@
   <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
   <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
   <script src="{{ asset('assets/js/template.js') }}"></script>
-  <script src="{{ asset('assets/js/settings.js') }}"></script>
-  <script src="{{ asset('assets/js/todolist.js') }}"></script>
 </body>
 </html>
