@@ -78,7 +78,7 @@
         </div>
       </div>
       <div class="d-flex justify-content-end mt-2">
-        <a href="/master/barang" class="btn btn-secondary mr-3">Batal</a>
+        <a href="/master/barangs" class="btn btn-secondary mr-3">Batal</a>
         <button class="btn btn-primary float-end" type="submit">Simpan</button>
       </div>
     </form>
@@ -160,7 +160,7 @@
           });
           // $('#formModal').modal('hide');
           // fetch_data(1);
-          location.href = base_url + `/master/barang`
+          location.href = base_url + `/master/barangs`
         } else {
           Swal.fire({
             icon: 'error',

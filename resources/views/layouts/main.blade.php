@@ -45,6 +45,10 @@
   <script src="{{ asset('assets/all/sort-table/sort-table.js') }}"></script>
   <script src="{{ asset('assets/all/sweetalert2/sweetalert2.all.min.js') }}"></script>
   <script src="{{ asset('assets/all/datepicker/bootstrap-datepicker.min.js') }}"></script>
+  {{-- Highcart --}}
+  <script src="{{ asset('assets/all/Highcharts/code/highcharts.js') }}"></script>
+  <script src="{{ asset('assets/all/Highcharts/code/modules/exporting.js') }}"></script>
+  <script src="{{ asset('assets/all/Highcharts/code/modules/export-data.js') }}"></script>
   <script>
     $(document).ready(function() {
       $.ajaxSetup({

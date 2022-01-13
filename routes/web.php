@@ -12,6 +12,7 @@ use App\Http\Controllers\BarangKeluarController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\MutasiStokController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MenuUserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +34,7 @@ Route::get('auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::group(['middleware' => 'auth'], function () {
   // dashboard
   Route::get('home', [HomeController::class, 'index'])->name('home');
+  Route::get('dashboard/persediaan-barang', [HomeController::class, 'getDashboardInvBarang'])->name('dashboard.persediaan-barang');
   // Route Master Data
   Route::group(['prefix' => '/master'], function () {
     Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis-barang');
@@ -114,9 +116,12 @@ Route::group(['middleware' => 'auth'], function () {
   
   //Group Setting
   Route::group(['prefix' => '/setting'], function () {
+    // User
     Route::get('user', [UserController::class, 'index'])->name('user');
     Route::get('user-add', [UserController::class, 'create'])->name('user.create');
     Route::get('user-edit/{id}', [UserController::class, 'edit'])->name('user.edit');
+    // Menu User
+    Route::get('menu-user', [MenuUserController::class, 'index'])->name('menu-user');
   });
    //Master User
    Route::group(['prefix' => '/user'], function () {
@@ -124,6 +129,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/update', [UserController::class, 'update'])->name('user.update');
     Route::get('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
     Route::get('/fetch-data', [UserController::class, 'fetch_data']);
+  });
+
+  // Setting Menu
+  Route::group(['prefix' => '/menu-user'], function () {
+    Route::post('/fetch-data', [MenuUserController::class, 'fetch_data']);
   });
 });
 
