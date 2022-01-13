@@ -1,6 +1,5 @@
 <div class="row g-4 align-items">
-  <?php $no = $data->firstItem();
-  $fmt = new NumberFormatter('id_ID', NumberFormatter::CURRENCY); ?>
+  <?php $no = $data->firstItem(); ?>
   @if (count($data) > 0)
   @foreach($data as $row)
   <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
@@ -26,7 +25,7 @@
               </p>
             </div>
             <div>
-              <p class="fw-normal">{{ $fmt->formatCurrency($row->harga_jual, 'IDR') }}</p>
+              <p class="fw-normal">Rp. @format_rupiah($row->harga_jual)</p>
             </div>
           </div>
           <div class="d-flex">
@@ -36,7 +35,7 @@
               </p>
             </div>
             <div>
-              <p class="fw-normal">{{ $fmt->formatCurrency($row->harga_beli, 'IDR') }}</p>
+              <p class="fw-normal">Rp. @format_rupiah($row->harga_beli)</p>
             </div>
           </div>
         </div>

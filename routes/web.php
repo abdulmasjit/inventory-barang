@@ -34,6 +34,7 @@ Route::get('auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::group(['middleware' => 'auth'], function () {
   // dashboard
   Route::get('home', [HomeController::class, 'index'])->name('home');
+  Route::get('dashboard/persediaan-barang', [HomeController::class, 'getDashboardInvBarang'])->name('dashboard.persediaan-barang');
   // Route Master Data
   Route::group(['prefix' => '/master'], function () {
     Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis-barang');
