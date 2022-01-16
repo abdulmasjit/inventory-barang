@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\Models\Barang;
+use App\Models\MainModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,14 +12,13 @@ class BarangController extends Controller
 {
     public function __construct()
     {
+      $this->m_main = new MainModel();
       $this->m_barang = new Barang();
     }
 
     public function index(Request $request)
     {
-        $data = [];
-        $q = $request->get('q');
-        return view('barang.index', compact('data', 'q'));
+        return view('barang.index');
     }
 
     public function fetch_data(Request $request)
@@ -60,9 +60,10 @@ class BarangController extends Controller
     public function create(Request $request)
     {
         $id = $request->id;
+        $kode = $this->m_main->generateKode('BRG', 'kode', 'barang');
         $dataTypeItems = $this->fecth_list_jenis_barang();
         $dataUnits = $this->fecth_list_satuan();
-        return view('barang.form_barang', compact('dataTypeItems', 'dataUnits'));
+        return view('barang.form_barang', compact('dataTypeItems', 'dataUnits', 'kode'));
     }
 
     public function edit(Request $request)
@@ -96,33 +97,27 @@ class BarangController extends Controller
     {
         try {
             $input = [
-                'kode' => $request->input('kode'),
                 'nama' => $request->input('nama'),
                 'id_jenis_barang' => $request->input('id_jenis_barang'),
                 'id_satuan' => $request->input('id_satuan'),
                 'harga_jual' => $request->input('harga_jual'),
                 'harga_beli' => $request->input('harga_beli'),
-                'stok' => $request->input('stok'),
                 'deskripsi' => $request->input('deskripsi'),
             ];
             $rules = [
-                'kode' => 'required',
                 'nama' => 'required',
                 'id_jenis_barang' => 'required',
                 'id_satuan' => 'required',
                 'harga_jual' => 'required',
                 'harga_beli' => 'required',
-                'stok' => 'required',
                 'deskripsi' => 'required',
             ];
             $messages = [
-                'kode.required' => 'Kode wajib diisi',
                 'nama.required' => 'Nama wajib diisi',
                 'id_jenis_barang.required' => 'Jenis Barang wajib diisi',
                 'id_satuan.required' => 'Satuan wajib diisi',
                 'harga_beli.required' => 'Harga Beli wajib diisi',
                 'harga_jual.required' => 'Harga Jual barang wajib diisi',
-                'stok.required' => 'Stok wajib diisi',
                 'deskripsi.required' => 'Deskripsi barang wajib diisi',
             ];
 
@@ -133,17 +128,19 @@ class BarangController extends Controller
                 return response()->json($response);
             }
 
+            $kode = $this->m_main->generateKode('BRG', 'kode', 'barang');
             // Handle Save
             $data = new Barang();
-            $data->kode = $request->kode;
+            $data->kode = $kode;
             $data->nama = $request->nama;
             $data->id_jenis_barang = $request->id_jenis_barang;
             $data->id_satuan = $request->id_satuan;
-            $data->stok = $request->stok;
+            $data->stok = 0;
             $data->foto = $this->uploadPhoto($request); // Cekking untuk upload file
             $data->deskripsi = $request->deskripsi;
             $data->harga_beli = $request->harga_beli;
             $data->harga_jual = $request->harga_jual;
+            $data->stok_minimum = $request->stok_minimum;
             $data->status = '1';
             $data->save();
 
@@ -161,33 +158,27 @@ class BarangController extends Controller
     {
         try {
             $input = [
-                'kode' => $request->input('kode'),
                 'nama' => $request->input('nama'),
                 'id_jenis_barang' => $request->input('id_jenis_barang'),
                 'id_satuan' => $request->input('id_satuan'),
                 'harga_jual' => $request->input('harga_jual'),
                 'harga_beli' => $request->input('harga_beli'),
-                'stok' => $request->input('stok'),
                 'deskripsi' => $request->input('deskripsi'),
             ];
             $rules = [
-                'kode' => 'required',
                 'nama' => 'required',
                 'id_jenis_barang' => 'required',
                 'id_satuan' => 'required',
                 'harga_jual' => 'required',
                 'harga_beli' => 'required',
-                'stok' => 'required',
                 'deskripsi' => 'required',
             ];
             $messages = [
-                'kode.required' => 'Kode wajib diisi',
                 'nama.required' => 'Nama wajib diisi',
                 'id_jenis_barang.required' => 'Jenis Barang wajib diisi',
                 'id_satuan.required' => 'Satuan wajib diisi',
                 'harga_beli.required' => 'Harga Beli wajib diisi',
                 'harga_jual.required' => 'Harga Jual barang wajib diisi',
-                'stok.required' => 'Stok wajib diisi',
                 'deskripsi.required' => 'Deskripsi barang wajib diisi',
             ];
 
@@ -199,22 +190,16 @@ class BarangController extends Controller
             }
 
             $id = $request->id_barang;
-            // echo dd($id);
-            // $file = $request->file('product_image');
-            // if ($file) {
-            // }
-            // $data = Barang::find($id)
             Barang::where('id_barang', $id)
                 ->update([
-                    'kode' => $request->kode,
                     'nama' => $request->nama,
                     'id_jenis_barang' => $request->id_jenis_barang,
                     'id_satuan' => $request->id_satuan,
-                    'stok' => $request->stok,
                     'foto' => $this->uploadPhoto($request),
                     'deskripsi' => $request->deskripsi,
                     'harga_beli' => $request->harga_beli,
                     'harga_jual' => $request->harga_jual,
+                    'stok_minimum' => $request->stok_minimum,
                 ]);
 
             $response['success'] = true;
@@ -229,10 +214,17 @@ class BarangController extends Controller
 
     public function delete($id)
     {
-        Barang::where("id_barang", $id)->delete();
-        $response['success'] = true;
-        $response['message'] = "Data berhasil dihapus";
-        return response()->json($response);
+        try {
+          Barang::where("id_barang", $id)->delete();
+          $response['success'] = true;
+          $response['message'] = "Data berhasil dihapus";
+          return response()->json($response);
+        } catch (Exception $e) {
+          $response['success'] = false;
+          $response['message'] = "Hapus data gagal";
+          return response()->json($response);
+        }
+
     }
 
     // Lookup Barang

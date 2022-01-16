@@ -24,8 +24,8 @@ class HomeController extends Controller
         $data = array(
           'total_barang' => $query1[0]->jml,
           'total_supplier' => $query2[0]->jml,
-          'total_pembelian' => $query3[0]->jml,
-          'total_penjualan' => $query4[0]->jml,
+          'total_penjualan' => $query3[0]->jml,
+          'total_pembelian' => $query4[0]->jml,
         );
         return view('dashboard/dashboard', $data);
     }

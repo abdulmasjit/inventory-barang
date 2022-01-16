@@ -11,10 +11,10 @@
         <div class="icon">
           <i class="fa fa-copy"></i>
         </div>
-        <a href="javascript:void(0)" class="small-box-footer"
+        {{-- <a href="javascript:void(0)" class="small-box-footer"
           >Lihat
           <i class="fa fa-arrow-right"></i>
-        </a>
+        </a> --}}
       </div>
     </div>
     <div class="col-md-3">
@@ -26,10 +26,10 @@
         <div class="icon">
           <i class="fa fa-copy"></i>
         </div>
-        <a href="javascript:void(0)" class="small-box-footer"
+        {{-- <a href="javascript:void(0)" class="small-box-footer"
           >Lihat
           <i class="fa fa-arrow-right"></i>
-        </a>
+        </a> --}}
       </div>
     </div>
     <div class="col-md-3">
@@ -41,10 +41,10 @@
         <div class="icon">
           <i class="fa fa-copy"></i>
         </div>
-        <a href="javascript:void(0)" class="small-box-footer"
+        {{-- <a href="javascript:void(0)" class="small-box-footer"
           >Lihat
           <i class="fa fa-arrow-right"></i>
-        </a>
+        </a> --}}
       </div>
     </div>
     <div class="col-md-3">
@@ -56,10 +56,10 @@
         <div class="icon">
           <i class="fa fa-copy"></i>
         </div>
-        <a href="javascript:void(0)" class="small-box-footer"
+        {{-- <a href="javascript:void(0)" class="small-box-footer"
           >Lihat
           <i class="fa fa-arrow-right"></i>
-        </a>
+        </a> --}}
       </div>
     </div>
 

@@ -14,7 +14,7 @@
           <input type="hidden" class="form-control" id="id" name="id" value="{{ isset($data) ? $data['id'] : '' }}"></input>
           <div class="form-group">
             <label for="kategori">Kode</label>
-            <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode . . ." value="{{ isset($data) ? $data['kode'] : '' }}" required>
+            <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode . . ." value="{{ isset($data) ? $data['kode'] : $kode }}" readonly>
           </div>
           <div class="form-group">
             <label for="kategori">Nama Jenis Barang</label>

@@ -17,7 +17,8 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/sort-table/sort-table.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/sweetalert2/sweetalert2.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/datepicker/bootstrap-datepicker3.min.css') }}">
-
+  <link rel="stylesheet" type="text/css" href="{{ asset('assets/all/dual_selectboxs/dist/bootstrap-duallistbox.css') }}">
+  
   @yield('css')
 </head>
 <body>
@@ -45,6 +46,7 @@
   <script src="{{ asset('assets/all/sort-table/sort-table.js') }}"></script>
   <script src="{{ asset('assets/all/sweetalert2/sweetalert2.all.min.js') }}"></script>
   <script src="{{ asset('assets/all/datepicker/bootstrap-datepicker.min.js') }}"></script>
+  <script src="{{ asset('assets/all/dual_selectboxs/dist/jquery.bootstrap-duallistbox.js') }}"></script>
   {{-- Highcart --}}
   <script src="{{ asset('assets/all/highcharts/code/highcharts.js') }}"></script>
   <script src="{{ asset('assets/all/highcharts/code/modules/exporting.js') }}"></script>

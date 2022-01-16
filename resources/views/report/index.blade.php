@@ -116,8 +116,8 @@
         </div>
         <hr class="mt-4">
         <div>
-          <a href="javascript:;" onclick="printReport()" class="btn btn-dark"><i class="fa fa-print"></i>&nbsp; Cetak PDF</a>
-          <a href="javascript:;" class="btn btn-success"><i class="fa fa-file-excel-o"></i>&nbsp; Export Excel</a>
+          <a href="javascript:;" onclick="printReport()" class="btn btn-success"><i class="fa fa-print"></i>&nbsp; Cetak PDF</a>
+          {{-- <a href="javascript:;" class="btn btn-success"><i class="fa fa-file-excel-o"></i>&nbsp; Export Excel</a> --}}
           <a href="javascript:;" onclick="reset()" class="btn btn-warning"><i class="fa fa-refresh"></i>&nbsp; Reset</a>
         </div>
       </div>

@@ -21,16 +21,16 @@
             </div>
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
-              <input type="text" id="email" name="email" class="form-control" placeholder="Email" value="{{ isset($data) ? $data['email'] : '' }}" required>
+              <input type="email" id="email" name="email" class="form-control" placeholder="Email" value="{{ isset($data) ? $data['email'] : '' }}" required>
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
               <input type="password" name="password" id="password" class="form-control" placeholder="Password" value="{{ isset($data) ? $data['password'] : '' }}" <?php echo $disabled; ?> required>
             </div>
             <div class="mb-3">
-            <label for="id_role">ID Role</label>
+            <label for="id_role">Role</label>
             <select id="id_role" name="id_role" class="form-control" required>
-              <option value="0" disabled="true" selected="true">Pilih ID Role</option>
+              <option value="0" disabled="true" selected="true">Pilih Role</option>
               @foreach ($dataRoles as $dataRole)
               @if(isset($data))
               <option value="{{ $dataRole->id_role }}" <?php if ($dataRole->id_role == $data['id_role']) : ?> selected="selected" <?php endif; ?>>{{ $dataRole->nama }}</option>

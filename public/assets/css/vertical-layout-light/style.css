@@ -3582,10 +3582,10 @@
   -o-transition: all 0.3s linear;
   transition: all 0.3s linear;
   position: absolute;
-  top: 10px;
+  top: 0px;
   right: 20px;
   z-index: 0;
-  font-size: 70px;
+  font-size: 65px;
   color: rgba(0, 0, 0, 0.15);
 }
 .small-box > .small-box-footer {
@@ -3626,7 +3626,7 @@
   background-color: #dd4b39 !important;
 }
 .d-icons {
-  font-size: 65px !important;
+  font-size: 60px !important;
 }
 
 /*# sourceMappingURL=../maps/vertical-layout-light/style.css.map */

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -108,12 +110,14 @@ class UserController extends Controller
                 return response()->json($response);
             }
 
+            $password = $request->password;
+            $hash_pass = Hash::make($password);
             // Handle Save
             $data = new User();
             $data->name = $request->name;
             $data->username = $request->username;
             $data->email = $request->email;
-            $data->password = $request->password;
+            $data->password = $hash_pass;
             $data->id_role = $request->id_role;
             $data->status = '1';
             $data->save();
@@ -167,7 +171,7 @@ class UserController extends Controller
                     'name' => $request->name,
                     'username' => $request->username,
                     'email' => $request->email,
-                    'password' => $request->password,
+                    // 'password' => $request->password,
                     'id_role' => $request->id_role,
                 ]);
 
