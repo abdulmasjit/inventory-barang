@@ -39,12 +39,12 @@
                 <div class="mt-3 mb-4">
                   <button type="submit" class="btn btn-block btn-primary font-weight-medium">Login</button>
                 </div>
-                <div class="my-2 d-flex justify-content-between align-items-center">
+                <div class="my-2 text-right">
                   <a href="javascript:;" class="auth-link text-black">Lupa password?</a>
                 </div>
-                <div class="text-center mt-4 font-weight-light" style="font-size:15px;">
+                {{-- <div class="text-center mt-4 font-weight-light" style="font-size:15px;">
                   Belum punya akun? <a href="javascript:;" class="text-primary">Register</a>
-                </div>
+                </div> --}}
               </form>
             </div>
             <div class="text-center mt-1">

@@ -22,7 +22,7 @@ function fetch_data(page) {
   var column_name = $('#hidden_column_name').val();
   var sort_type = $('#hidden_sort_type').val();
   $.ajax({
-    url: base_url + "/user/fetch-data",
+    url: base_url + "/customer/fetch-data",
     type: 'GET',
     dataType: 'html',
     data: {
@@ -56,19 +56,47 @@ function sort_table(id, column){
   $('#hidden_page').val(1);
   fetch_data(1);
 }
+
+$('#btn-tambah').on('click', function() {
+    $.ajax({
+        url: base_url + "/customer/load-modal",
+        type: 'GET',
+        data : {},
+        dataType: 'html',
+        beforeSend: function() {},
+        success: function(result) {
+            $('#div_modal').html(result);
+            $('#modeform').val('ADD');
+            $('#formModal').modal('show');
+        }
+    });
+});
+
 $(document).on('click', '.btn-ubah', function(event) {
   event.preventDefault();
   var id = $(this).attr('data-id');
-  location.href = base_url + `/setting/user-edit/${id}`
+  $.ajax({
+    url: base_url + "/customer/load-modal",
+    type: 'get',
+    dataType: 'html',
+    data:{id:id},
+    beforeSend: function () {},
+    success: function (result) {    
+      $('#div_modal').html(result);
+      $('#modeform').val('UPDATE');
+      $('#formModal').modal('show');
+    }
+  });
 });
+
 $(document).on('click', '.btn-hapus', function(e) {
   var id = $(this).attr('data-id');
   var title = $(this).attr('data-name');
   var page = $('#hidden_page').val();
 
   Swal.fire({
-    title: 'Hapus User',
-    text: "Apakah Anda yakin menghapus data ?",
+    title: 'Hapus Customer',
+    text: "Apakah Anda yakin data ?",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33',
@@ -81,7 +109,7 @@ $(document).on('click', '.btn-hapus', function(e) {
         $.ajax({
           method: 'GET',
           dataType: 'json',
-          url: base_url + "/user/delete/" + id,
+          url: base_url + "/customer/delete/" + id,
           data: {},
           success: function (data) {
             if (data.success === true) {
@@ -113,40 +141,34 @@ $(document).on('click', '.btn-hapus', function(e) {
 $(document).on('submit', '#formData', function(event) {
   event.preventDefault();
   const modeform = $('#modeform').val();
-  if ($('#id').val() !== '') {
-    var url = "/user/update";
-  } else {
-    var url = "/user/add";
+  if(modeform=='ADD'){
+    var url = "/customer/save";
+  }else{
+    var url = "/customer/update";
   }
 
   $.ajax({
-    url: base_url + url,
-    method: 'POST',
-    dataType: 'json',
-    data: new FormData($('#formData')[0]),
-    async: true,
-    processData: false,
-    contentType: false,
-    success: function(data) {
-      console.log('after ', data)
-      if (data.success == true) {
-        Toast.fire({
-          icon: 'success',
-          title: data.message
-        });
-        // $('#formModal').modal('hide');
-        // fetch_data(1);
-        location.href = base_url + `/setting/user`
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: data.message
-        });
+      url: base_url + url,
+      method: 'POST',
+      dataType: 'json',	
+      data: new FormData($('#formData')[0]),
+      async: true,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+        if (data.success == true) {
+            Toast.fire({
+                icon: 'success',
+                title: data.message
+            });
+            $('#formModal').modal('hide');
+            fetch_data(1);
+        } else {
+            Swal.fire({icon: 'error',title: 'Oops...',text: data.message});
+        }
+      },
+      fail: function (event) {
+          alert(event);
       }
-    },
-    fail: function(event) {
-      alert(event);
-    }
   });
 });

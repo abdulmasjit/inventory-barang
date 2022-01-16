@@ -14,9 +14,7 @@
           </div>
           <div class="form-input">
             <label for="product_image">Upload Image</label>
-            <!-- <input type="file" id="file-ip-1" accept="image/*" onchange="showPreview(event);"> -->
             <input type="file" name="product_image" id="product_image" accept="image/*">
-
           </div>
         </div>
       </div>
@@ -25,7 +23,7 @@
         <div class="col-lg-6">
           <div class="mb-3">
             <label for="kode" class="form-label">Kode</label>
-            <input id="kode" name="kode" class="form-control" type="text" class="w-full" value="{{ isset($data) ? $data['kode'] : '' }}" required />
+            <input id="kode" name="kode" class="form-control" type="text" class="w-full" value="{{ isset($data) ? $data['kode'] : $kode }}" readonly />
           </div>
           <div class="mb-3">
             <label for="nama" class="form-label">Nama</label>
@@ -67,9 +65,13 @@
             <label for="harga_beli" class="form-label">Harga Beli</label>
             <input id="harga_beli" name="harga_beli" class="form-control" type="number" class="w-full" value="{{ isset($data) ? $data['harga_beli'] : '' }}" required />
           </div>
+          {{-- <div class="mb-3">
+            <label for="stok" class="form-label">Stok Awal</label>
+            <input id="stok" name="stok" class="form-control" type="number" class="w-full" value="{{ isset($data) ? $data['stok'] : '' }}" <?= isset($data) ? 'readonly' : 'required' ?> />
+          </div> --}}
           <div class="mb-3">
-            <label for="stok" class="form-label">Stok</label>
-            <input id="stok" name="stok" class="form-control" type="number" class="w-full" value="{{ isset($data) ? $data['stok'] : '' }}" required />
+            <label for="stok" class="form-label">Stok Minimum</label>
+            <input id="stok_minimum" name="stok_minimum" class="form-control" type="number" class="w-full" value="{{ isset($data) ? $data['stok_minimum'] : '' }}" />
           </div>
           <div class="mb-3">
             <label for="deskripsi" class="form-label">Deskripsi</label>

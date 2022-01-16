@@ -95,7 +95,7 @@ $(document).on('click', '.btn-hapus', function(e) {
   var page = $('#hidden_page').val();
 
   Swal.fire({
-    title: 'Hapus Jenis Barang',
+    title: 'Hapus Supplier',
     text: "Apakah Anda yakin data ?",
     icon: 'warning',
     showCancelButton: true,

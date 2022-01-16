@@ -13,6 +13,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\MutasiStokController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MenuUserController;
+use App\Http\Controllers\CustomerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::group(['prefix' => '/master'], function () {
     Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis-barang');
     Route::get('supplier', [SupplierController::class, 'index'])->name('supplier');
+    Route::get('customer', [CustomerController::class, 'index'])->name('customer');
     Route::get('satuan', [SatuanController::class, 'index'])->name('satuan');
     Route::get('barangs', [BarangController::class, 'index'])->name('barang');
     Route::get('barang-add', [BarangController::class, 'create'])->name('barang.create');
@@ -77,6 +79,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/load-modal', [SupplierController::class, 'load_modal']);
     Route::get('/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
     Route::get('/fetch-data', [SupplierController::class, 'fetch_data']);
+  });
+  // Master Customer
+  Route::group(['prefix' => '/customer'], function () {
+    Route::post('/save', [CustomerController::class, 'save'])->name('customer.save');
+    Route::post('/update', [CustomerController::class, 'update'])->name('customer.update');
+    Route::get('/load-modal', [CustomerController::class, 'load_modal']);
+    Route::get('/delete/{id}', [CustomerController::class, 'delete'])->name('customer.delete');
+    Route::get('/fetch-data', [CustomerController::class, 'fetch_data']);
   });
   // Barang Masuk
   Route::group(['prefix' => '/barang-masuk'], function() {
@@ -133,7 +143,11 @@ Route::group(['middleware' => 'auth'], function () {
 
   // Setting Menu
   Route::group(['prefix' => '/menu-user'], function () {
-    Route::post('/fetch-data', [MenuUserController::class, 'fetch_data']);
+    Route::get('/fetch-data', [MenuUserController::class, 'fetch_data']);
+    Route::get('/load-modal', [MenuUserController::class, 'load_modal']);
+    Route::post('/save', [MenuUserController::class, 'save'])->name('menu-user.save');
+    Route::get('/delete/{id}', [MenuUserController::class, 'delete'])->name('menu-user.delete');
+    Route::post('/reorder-menu', [MenuUserController::class, 'reorder_menu'])->name('menu-user.reorder-menu');
   });
 });
 

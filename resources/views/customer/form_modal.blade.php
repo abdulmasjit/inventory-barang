@@ -2,7 +2,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="formModalLabel">Tambah Supplier</h5>
+        <h5 class="modal-title" id="formModalLabel">Tambah Customer</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -17,12 +17,12 @@
             <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode . . ." value="{{ isset($data) ? $data['kode'] : $kode }}" readonly>
           </div>
           <div class="form-group">
-            <label for="nama">Nama Supplier</label>
-            <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Supplier . . ." value="{{ isset($data) ? $data['nama'] : '' }}" required>
+            <label for="nama">Nama</label>
+            <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Customer . . ." value="{{ isset($data) ? $data['nama'] : '' }}" required>
           </div>
           <div class="form-group">
-            <label for="no_telp">No Telephone</label>
-            <input type="number" class="form-control" id="no_telp" name="no_telp" placeholder="No Telphone . . ." value="{{ isset($data) ? $data['no_telp'] : '' }}" required>
+            <label for="no_telp">No Telepon</label>
+            <input type="number" class="form-control" id="no_telp" name="no_telp" placeholder="No Telepon . . ." value="{{ isset($data) ? $data['no_telp'] : '' }}" required>
           </div>
           <div class="form-group">
             <label for="alamat">Alamat</label>

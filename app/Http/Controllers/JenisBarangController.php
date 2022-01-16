@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\Models\JenisBarang;
+use App\Models\MainModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class JenisBarangController extends Controller
 {
+    public function __construct()
+    {
+      $this->m_main = new MainModel();
+    }
+
     public function index(Request $request)
     {   
-        $data = [];
-        $q = $request->get('q');
-        return view('jenis_barang.index', compact('data', 'q'));
+        return view('jenis_barang.index');
     }
 
     public function fetch_data(Request $request)
@@ -36,6 +40,8 @@ class JenisBarangController extends Controller
     public function load_modal(Request $request)
     {
       $id = $request->id;
+      $kode = $this->m_main->generateKode('JNS', 'kode', 'jenis_barang');
+      $data['kode'] = $kode;
       if ($id != "") {
         $data['mode'] = "UPDATE";
         $data['data'] = JenisBarang::find($id);	
@@ -49,15 +55,12 @@ class JenisBarangController extends Controller
     {
       try {
           $input = [
-            'kode' => $request->input('kode'),
             'nama' => $request->input('nama'),
           ];
           $rules = [
-            'kode' => 'required',
             'nama' => 'required',
           ];
           $messages = [
-            'kode.required' => 'Kode wajib diisi',
             'nama.required' => 'Jenis barang wajib diisi',
           ];
 
@@ -68,9 +71,10 @@ class JenisBarangController extends Controller
               return response()->json($response);
           }
           
+          $kode = $this->m_main->generateKode('JNS', 'kode', 'jenis_barang');
           // Handle Save
           $data = new JenisBarang();
-          $data->kode = $request->kode;
+          $data->kode = $kode;
           $data->nama = $request->nama;
           $data->status = '1';
           $data->save();
@@ -89,15 +93,12 @@ class JenisBarangController extends Controller
     {
       try {
           $input = [
-            'kode' => $request->input('kode'),
             'nama' => $request->input('nama'),
           ];
           $rules = [
-            'kode' => 'required',
             'nama' => 'required',
           ];
           $messages = [
-            'kode.required' => 'Kode wajib diisi',
             'nama.required' => 'Jenis barang wajib diisi',
           ];
 
@@ -109,10 +110,8 @@ class JenisBarangController extends Controller
           }
 
           $id = $request->id;
-          $data = JenisBarang::find($id)
-          // JenisBarang::where('id', $id)
+          $data = JenisBarang::where('id', $id)
           ->update([
-            'kode' => $request->kode,
             'nama' => $request->nama
           ]); 
 
@@ -128,9 +127,15 @@ class JenisBarangController extends Controller
 
     public function delete($id)
     { 
-        JenisBarang::where("id", $id)->delete();
-        $response['success'] = true;
-        $response['message'] = "Data berhasil dihapus";
-        return response()->json($response);
+        try {
+          JenisBarang::where("id", $id)->delete();
+          $response['success'] = true;
+          $response['message'] = "Data berhasil dihapus";
+          return response()->json($response);
+        } catch (Exception $e) {
+          $response['success'] = false;
+          $response['message'] = "Hapus data gagal";
+          return response()->json($response);
+        }
     }
 }
