@@ -30,7 +30,7 @@ class MenuUser extends Model
       return $query;
     }
 
-    function get_menu_max_level2($id_role="", $id_parent_menu, $level="2"){
+    function get_menu_max_level2($id_role="", $id_parent_menu="", $level="2"){
         $query = DB::select("
             select coalesce(max(urutan),0) as urutan from menu_user 
             where id_role = '$id_role' and id_parent_menu = '$id_parent_menu' and level = '$level'
