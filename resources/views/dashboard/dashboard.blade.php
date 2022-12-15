@@ -64,7 +64,7 @@
     </div>
 
   </div>
-  <div class="row mt-1">
+  {{-- <div class="row mt-1">
     <div class="col-md-12">
       <div class="card">
         <div class="card-body">
@@ -83,13 +83,13 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
 </div>
 @endsection
 @section('js')
 <script>
   $(document).ready(function() {
-    load_chart()
+    // load_chart()
   });
 
   $('#tahun').on('change', function(e) {
